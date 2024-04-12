@@ -7,7 +7,7 @@ Repository for tracking the development of "IFFT" tool for my "term paper".
 # Usage
 *Right now the usage modes are here just as an illustration. An investigative work of the viability of these modes is still required.*
 
-# Pacote do PyPi
+# PyPi Package
 ```shell
 ifft run
 ifft change_pattern
