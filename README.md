@@ -16,7 +16,7 @@ ifft exit
 
 # Hooks
 ```yaml
-- repo: [https://github.com/thiagosantos0/TCC-UFMG](https://github.com/thiagosantos0/TCC-UFMG)
+- repo: [https://github.com/thiagosantos0/IFFT](https://github.com/thiagosantos0/IFFT)
   # Version
   rev: v1.0.0
   hooks:
