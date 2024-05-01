@@ -1,13 +1,14 @@
 from git import Repo
+from dotenv import load_dotenv
 import os
 import logging
 
 file_dir = os.path.dirname(__file__)
 dir_path_mock_project = os.path.join(file_dir, '..', './mock_project/')
 
-LOG_LEVEL = os.getenv('LOG_LEVEL', 'DEBUG')
-logging.basicConfig(level=LOG_LEVEL, format='%(asctime)s - %(levelname)s - %(message)s')
-
+load_dotenv()
+log_level = os.getenv("LOG_LEVEL")
+logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def analyze_repo(project_path=''):
     '''
@@ -15,8 +16,8 @@ def analyze_repo(project_path=''):
         staged and unstaged files.
     '''
     project_path = dir_path_mock_project
-
-    print("Checking staged and unstaged changes in: ", str(project_path))
+    print(f"Project path: {project_path}")
+    logging.info("Checking staged and unstaged changes in: {}".format(project_path))
 
     try:
         repo = Repo(project_path)
@@ -26,12 +27,12 @@ def analyze_repo(project_path=''):
         return []
 
     staged_files = [item.a_path for item in repo.index.diff("HEAD")]
-    print("Staged files: ", str(staged_files))
+    logging.info("Staged files: {}".format(' '.join(map(str, staged_files))))
     if not staged_files:
         logging.debug("No staged files found")
 
     unstaged_files = [item.a_path for item in repo.index.diff(None)]
-    print("Unstaged files: ", str(unstaged_files))
+    logging.info("Unstaged files: {}".format(' '.join(map(str, unstaged_files))))
     if not unstaged_files:
         logging.debug("No unstaged files found")
 
