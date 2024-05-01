@@ -3,10 +3,10 @@
 import sys
 import os
 
-from ifft_core.ifft_parser import scan_file
+from ifft_core.ifft_parser import *
 
 def main():
-    results = scan_file()
+    results = analyze_repo()
 
 if __name__ == "__main__":
     main()

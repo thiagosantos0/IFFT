@@ -8,12 +8,43 @@ dir_path_mock_project = os.path.join(file_dir, '..', './mock_project/')
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'DEBUG')
 logging.basicConfig(level=LOG_LEVEL, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def scan_file(project_path='', file_path=''):
+
+def analyze_repo(project_path=''):
     '''
-        Scan through the file and find out the content inside the IFTT block.
+        Analyse the git repository and perform a scan for IFFT blocks on 
+        staged and unstaged files.
     '''
     project_path = dir_path_mock_project
-    file_path = dir_path_mock_project + "app.py"
+
+    print("Checking staged and unstaged changes in: ", str(project_path))
+
+    try:
+        repo = Repo(project_path)
+
+    except Exception as error:
+        logging.error("Failed to load repository: ", error)
+        return []
+
+    staged_files = [item.a_path for item in repo.index.diff("HEAD")]
+    print("Staged files: ", str(staged_files))
+    if not staged_files:
+        logging.debug("No staged files found")
+
+    unstaged_files = [item.a_path for item in repo.index.diff(None)]
+    print("Unstaged files: ", str(unstaged_files))
+    if not unstaged_files:
+        logging.debug("No unstaged files found")
+
+    results = scan_files(project_path)
+
+    return results
+
+
+def scan_files(project_path=''):
+    '''
+        Scan through the files of a repository and find out the content inside the IFTTs blocks.
+    '''
+    project_path = dir_path_mock_project
 
     results = []
 
