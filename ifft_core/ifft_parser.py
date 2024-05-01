@@ -45,6 +45,9 @@ def scan_files(project_path=''):
         Scan through the files of a repository and find out the content inside the IFTTs blocks.
     '''
     project_path = dir_path_mock_project
+    in_block = False
+    block_content = ""
+
 
     results = []
 
@@ -59,10 +62,19 @@ def scan_files(project_path=''):
             for line in lines:
                 if line.strip().startswith("#IFFT.If"):
                     logging.debug("Entering IFFT block" + line)
+                    in_block = True
+                    block_content += line
         
                 elif line.strip().startswith("#IFFT.Then"):
                     logging.debug("Exiting IFFT block" + line)
+                    in_block = False
+
+                    # TO-DO: Add logic to wrap-up the block content process after
+                    # it comes out of the block.
+                    pass
+
+                elif in_block:
+                    block_content += line
     
-
-    return results
-
+    #return results
+    return block_content
