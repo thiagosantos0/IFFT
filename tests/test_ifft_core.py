@@ -28,3 +28,16 @@ def test_filelabel_parse_ifft():
     filepath = dir_path_mock_project
     results_dict = scan_files(filepath)
     assert results_dict['file1.py'][0][2] == "associated_file_ifft_label"
+
+def test_scan_repositoty_files():
+    repo_path = dir_path_mock_project
+    results_dict = scan_files(repo_path)
+    files_identified = list(results_dict.keys())
+
+    files = os.listdir(repo_path)
+    python_files = [file for file in files if file.endswith('.py')]
+    
+    assert set(python_files) == set(files_identified)
+
+
+
