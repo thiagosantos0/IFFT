@@ -13,24 +13,29 @@ dir_path_mock_project = os.path.join(file_dir, '..', 'mock_project/')
 
 from ifft_core.ifft_parser import scan_files
 
-def test_content_parse_ifft():
+@pytest.fixture
+def setup():
     filepath = dir_path_mock_project
+    return filepath
+
+def test_content_parse_ifft(setup):
+    filepath = setup
     results_dict = scan_files(filepath)
     # Getting one of the files in the projmock_project as example
     assert results_dict['file1.py'][0][0] == "#IFFT.If This is a test comment\n\nprint('Hello world!')\n\n"
 
-def test_filepath_parse_ifft():
-    filepath = dir_path_mock_project
+def test_filepath_parse_ifft(setup):
+    filepath = setup
     results_dict = scan_files(filepath)
     assert results_dict['file1.py'][0][1] == "path_to_associated_file"
 
-def test_filelabel_parse_ifft():
-    filepath = dir_path_mock_project
+def test_filelabel_parse_ifft(setup):
+    filepath = setup
     results_dict = scan_files(filepath)
     assert results_dict['file1.py'][0][2] == "associated_file_ifft_label"
 
-def test_scan_repositoty_files():
-    repo_path = dir_path_mock_project
+def test_scan_repositoty_files(setup):
+    repo_path = setup
     results_dict = scan_files(repo_path)
     files_identified = list(results_dict.keys())
 
