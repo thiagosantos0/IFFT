@@ -75,7 +75,9 @@ def scan_files(project_path=''):
                     logging.info("Exiting IFFT block" + line)
                     associated_file = line.strip().split('(')[1].split(')')[0]
                     associated_file_name = associated_file.split(',')[0]
+                    associated_file_label = associated_file.split(',')[1]
                     logging.info(f"Associated file name: {associated_file_name}")
+                    logging.info(f"Associated file label: {associated_file_label}")
                     block_end = line_number
                     results.append((block_content, associated_file_name))
                     logging.info(f"Block content: \n{block_content}")
