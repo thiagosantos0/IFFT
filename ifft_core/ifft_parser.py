@@ -18,6 +18,7 @@ def analyze_repo(project_path=''):
     project_path = dir_path_mock_project
     print(f"Project path: {project_path}")
     logging.info("Checking staged and unstaged changes in: {}".format(project_path))
+    
 
     try:
         repo = Repo(project_path)
@@ -48,6 +49,9 @@ def scan_files(project_path=''):
     project_path = dir_path_mock_project
     in_block = False
     block_content = ""
+    associated_file = ""
+    block_start = 0
+    block_end = 0
 
 
     results = []
@@ -60,22 +64,26 @@ def scan_files(project_path=''):
             lines = open(file_path).readlines()
         
 
-            for line in lines:
+            for line_number, line in enumerate(lines):
                 if line.strip().startswith("#IFFT.If"):
                     logging.debug("Entering IFFT block" + line)
                     in_block = True
+                    block_start = line_number
                     block_content += line
-        
-                elif line.strip().startswith("#IFFT.Then"):
-                    logging.debug("Exiting IFFT block" + line)
-                    in_block = False
 
-                    # TO-DO: Add logic to wrap-up the block content process after
-                    # it comes out of the block.
-                    pass
+                elif line.strip().startswith("#IFFT.Then"):
+                    logging.info("Exiting IFFT block" + line)
+                    associated_file = line.strip().split('(')[1].split(')')[0]
+                    associated_file_name = associated_file.split(',')[0]
+                    logging.info(f"Associated file name: {associated_file_name}")
+                    block_end = line_number
+                    results.append((block_content, associated_file_name))
+                    logging.info(f"Block content: \n{block_content}")
+                    logging.info("Block end found at line: {}".format(block_end))
+                    in_block = False
 
                 elif in_block:
                     block_content += line
     
-    #return results
-    return block_content
+    # Returning the results of the first IFFT block found in the file
+    return results
