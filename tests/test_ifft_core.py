@@ -24,15 +24,16 @@ def test_content_parse_ifft(setup):
     # Getting one of the files in the projmock_project as example
     assert results_dict['file1.py'][0][0] == "#IFFT.If This is a test comment\n\nprint('Hello world!')\n\n"
 
-def test_filepath_parse_ifft(setup):
+def test_filepath_parse_ifft_invalid_associated_file(setup):
     filepath = setup
     results_dict = scan_files(filepath)
-    assert results_dict['file1.py'][0][1] == "path_to_associated_file"
+    #
+    assert results_dict['file1.py'][0][1] == ""
 
-def test_filelabel_parse_ifft(setup):
+def test_filelabel_parse_ifft_invalid_associated_file_label(setup):
     filepath = setup
     results_dict = scan_files(filepath)
-    assert results_dict['file1.py'][0][2] == "associated_file_ifft_label"
+    assert results_dict['file1.py'][0][2] == ""
 
 def test_scan_repositoty_files(setup):
     repo_path = setup
