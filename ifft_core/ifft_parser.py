@@ -10,6 +10,23 @@ load_dotenv()
 log_level = os.getenv("LOG_LEVEL")
 logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s')
 
+
+def validate_associated_file(associated_file_name):
+    '''
+        Validate the associated file name and label.
+    '''
+    # starting from the root of the project
+    project_path = os.path.join(dir_path_mock_project)
+    associated_file_name = associated_file_name.replace('"', '')
+    file_path = os.path.join(project_path, associated_file_name)
+    if not os.path.isfile(file_path):
+        logging.error(f"Associated file: {associated_file_name} not found")
+        logging.info(f"Associated file path: {file_path}")
+        return False
+    logging.info(f"Associated file: {associated_file_name} found")
+
+    return True
+
 def analyze_repo(project_path=dir_path_mock_project):
     '''
         Analyse the git repository and perform a scan for IFFT blocks on 
@@ -69,8 +86,15 @@ def scan_file(project_path, filename):
         elif line.strip().startswith("#IFFT.Then"):
             logging.info("Exiting IFFT block" + line)
             associated_file = line.strip().split('(')[1].split(')')[0]
+            print(f"Associated file: {associated_file}")
             associated_file_name = associated_file.split(',')[0]
+            print(f"Associated filename: {associated_file_name}")
             associated_file_label = associated_file.split(',')[1].strip()
+            # Check if the associated file exists
+            valid_associated_file = validate_associated_file(associated_file_name)
+            if not valid_associated_file:
+                associated_file_name = ""
+                associated_file_label = ""
             logging.info(f"Associated file name: {associated_file_name}")
             logging.info(f"Associated file label: {associated_file_label}")
             block_end = line_number
