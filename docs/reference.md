@@ -10,6 +10,6 @@ The module contains the following functions:
 - `scan_files(project_path, dir_path_mock_project) - Scan the repository for modified Python files and return the results in a dictionary.`
 - `validate_associated_file(associated_file_name)` - Validade if the associated file specified in IFFT block exists.
 
-### **Note: ** For the examples in this documentation, the plus sign (+) indicates a modified line.
+### **Note:** For the examples in this documentation, the plus sign (+) indicates a modified line.
 
 ::: ifft_core.ifft_parser
