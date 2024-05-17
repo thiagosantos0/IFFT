@@ -1,4 +1,7 @@
+"""
+IFFT tool
 
+"""
 # Main file for IFTT linter
 
 import sys

@@ -1,3 +1,5 @@
+# ifft_core/iftt_parser.py
+
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 import os
 import logging
@@ -12,7 +14,25 @@ log_level = os.getenv("LOG_LEVEL")
 logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-def validate_associated_file(associated_file_name):
+def validate_associated_file(associated_file_name: str) -> bool:
+    """
+        Validate if the associated file specified in IFFT block exists.
+
+        Example:
+            >>>validate_associated_file("foo_file.py")
+            True
+
+            >>>validate_associated_file("foo_file2.py")
+            False
+
+        Args:
+            associated_file_name (String): A string corresponding to the file beeing
+                verified.
+
+        Returns:
+            bool: A boolean that indicate whether the specified file is valid or not.
+    """
+
     project_path = os.path.join(dir_path_mock_project)
     associated_file_name = associated_file_name.replace('"', '')
     file_path = os.path.join(project_path, associated_file_name)
@@ -23,8 +43,27 @@ def validate_associated_file(associated_file_name):
     logging.info(f"{Fore.YELLOW} Associated file: {associated_file_name} found {Style.RESET_ALL}")
     return True
 
-def get_modified_lines(repo, filename):
-    """Get a set of modified lines for the given filename."""
+def get_modified_lines(repo: str, filename: str) -> set:
+    """
+        Get a set of modified lines for the given filename.
+
+        Example:
+            >>>file1.py:\n
+                + line1\n
+                + line2\n
+                + line3
+
+            >>>get_modified_lines(repo, file1.py)\n
+            {'line1', 'line2', 'line3'}
+
+        Args:
+            repo (str): A string corresponding to the repository.
+            filename (str): A string corresponding to the filename.
+
+        Returns:
+            set: A set of modified lines.
+
+    """
     modified_lines = set()
     diff_text = repo.git.diff(None, filename)
     for line in diff_text.split('\n'):
@@ -33,7 +72,34 @@ def get_modified_lines(repo, filename):
     print(f"{Fore.GREEN} Modified lines: {modified_lines} {Style.RESET_ALL}")
     return modified_lines
 
-def scan_file(project_path, filename, modified_lines_set):
+def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list:
+    """
+        Scan the file for IFFT blocks and return the results.
+
+        Example:
+            >>>file1.py:\n
+                #IFFT.If\n
+                    + line1\n
+                    + line2\n
+                    + line3
+                #IFFT.Then("foo_file.py", "foo_label")
+                
+            >>>scan_file(project_path, file1.py, {'line1', 'line2', 'line3'})\n
+                [{'block_content': '...',
+                  'associated_file_name': 'foo_file.py',
+                  'associated_file_label': 'foo_label',
+                  'modified_lines_within_block': {'line1', 'line2', 'line3'}}]
+
+        Args:
+            project_path (str): A string corresponding to the project path.
+            filename (str): A string corresponding to the filename.
+            modified_lines_set (set): A set of modified lines.
+
+        Returns:
+            list: A list of results.
+
+    """
+
     results = []
     in_block = False
     block_content = ""
@@ -86,9 +152,43 @@ def scan_file(project_path, filename, modified_lines_set):
 
     return results
 
-def scan_files(project_path=dir_path_mock_project):
-    results_dict = {}
+def scan_files(project_path: str = dir_path_mock_project) -> dict:
+    """
+        Scan the repository for modified Python files and return the results in a dictionary.
+        
+        Example:
+            >>>file1.py:\n
+                #IFFT.If\n
+                    + line1\n
+                    + line2\n
+                    + line3
+                #IFFT.Then("foo_file.py", "foo_label")
+            >>>file2.py:\n
+                #IFFT.If\n
+                    + line4\n
+                    + line5\n
+                    + line6
+                #IFFT.Then("foo_file2.py", "foo_label2")
 
+            >>>scan_files(project_path)\n
+                {'file1.py': [{'block_content': '...',
+                               'associated_file_name': 'foo_file.py',
+                               'associated_file_label': 'foo_label',
+                               'modified_lines_within_block': {'line1', 'line2', 'line3'}}]
+                    'file2.py': [{'block_content': '...',
+                                'associated_file_name': 'foo_file2.py',
+                               'associated_file_label': 'foo_label2',
+                               'modified_lines_within_block': {'line4', 'line5', 'line6'}}]}
+        
+        Args:
+            project_path (str): A string corresponding to the project path.
+
+        Returns:
+            dict: A dictionary of results.
+
+    """
+
+    results_dict = {}
     try:
         repo = Repo(project_path)
     except NoSuchPathError:

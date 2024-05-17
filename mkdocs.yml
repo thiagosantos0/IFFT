@@ -10,6 +10,7 @@ theme:
     code: Roboto Mono
 
 plugins:
+  - search
   - mkdocstrings
 
 nav:
@@ -17,4 +18,3 @@ nav:
   - tutorials.md
   - how-to-guides.md
   - reference.md
-  - explanation.md

@@ -1,6 +1,8 @@
 # Welcome to MkDocs
 
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+IFFT is a Python linter to help you handle correlated changes across your codebase.
+
 
 ## Commands
 
