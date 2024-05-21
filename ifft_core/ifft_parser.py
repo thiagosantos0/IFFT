@@ -66,11 +66,21 @@ def get_modified_lines(repo: str, filename: str) -> set:
     """
     modified_lines = set()
     diff_text = repo.git.diff(None, filename)
-    for line in diff_text.split('\n'):
-        if line.startswith('+') and not line.startswith('+++'):
-            modified_lines.add(line[1:].strip())
-    print(f"{Fore.GREEN} Modified lines: {modified_lines} {Style.RESET_ALL}")
+    diff_lines = diff_text.split('\n')
+    line_number = 0
+
+    for line in diff_lines:
+        if line.startswith('@@'):
+            line_number = int(line.split()[2].split(',')[0].replace('+', ''))
+        elif line.startswith('+') and not line.startswith('+++'):
+            modified_lines.add((line_number, line[1:].strip()))
+            line_number += 1
+        elif line.startswith(' '):
+            line_number += 1
+
+    logging.info(f"{Fore.GREEN} Modified lines: {modified_lines} {Style.RESET_ALL}")
     return modified_lines
+
 
 def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list:
     """
