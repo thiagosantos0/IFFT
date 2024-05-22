@@ -15,5 +15,5 @@ plugins:
 
 nav:
   - index.md
-  - tutorials.md
+  - Tutorial: 'tutorial-example.md'
   - reference.md

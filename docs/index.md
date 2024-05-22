@@ -1,19 +1,31 @@
-# Welcome to MkDocs
+# IFFT 
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 IFFT is a Python linter to help you handle correlated changes across your codebase.
+
+<!--- Adding a image of the tool banner -->
 
 
 ## Commands
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+* `./ifft.py [dir-name]` - Run IFFT tool in [dir_name] project.
 
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+## Project structure 
+```
+  ├── banner.py
+  ├── docs
+  ├── ifft_core
+  │   ├── ifft_parser.py # File with tool helper methods
+  │   └── __init__.py
+  ├── ifft.py # Main file that triggers the tool
+  ├── mkdocs.yml
+  ├── mock_project # Mock project to test the tool
+  ├── README.md
+  ├── requirements.txt
+  ├── site # Documentation
+  ├── surfaces
+  │   └── library
+  │       └── filler_file
+  └── tests
+      ├── filler_file
+      └── test_ifft_core.py
+```
