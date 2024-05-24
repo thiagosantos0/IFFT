@@ -3,6 +3,7 @@
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 import os
 import logging
+import re
 from colorama import Fore, Style
 from dotenv import load_dotenv
 
@@ -124,19 +125,24 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
 
     lines = open(file_path).readlines()
 
+    ifft_if_pattern = re.compile(r'#\s*IFFT\.If', re.IGNORECASE)
+    ifft_then_pattern = re.compile(r'#\s*IFFT\.Then\(\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)', re.IGNORECASE)
+
     for line_number, line in enumerate(lines):
-        if line.strip().startswith("#IFFT.If"):
+        if ifft_if_pattern.search(line.strip()):
             logging.debug(f"{Fore.GREEN} Entering IFFT block {line} {Style.RESET_ALL}")
             in_block = True
             block_start = line_number
             block_content += line
+            # block reset
             modified_lines_within_blocks = []
 
-        elif line.strip().startswith("#IFFT.Then"):
+        elif ifft_then_pattern.search(line):
             logging.info(f"{Fore.YELLOW} Exiting IFFT block {line} + {Style.RESET_ALL}")
-            associated_file = line.strip().split('(')[1].split(')')[0]
-            associated_file_name = associated_file.split(',')[0]
-            associated_file_label = associated_file.split(',')[1].strip()
+            match = ifft_then_pattern.search(line)
+            print(f"Match: {match}")
+            associated_file_name = match.group(1)
+            associated_file_label = match.group(2)
             valid_associated_file = validate_associated_file(associated_file_name)
             if not valid_associated_file:
                 associated_file_name = ""
@@ -159,11 +165,13 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
 
         elif in_block:
             block_content += line
-            if (line_number + 1, line.strip()) in modified_lines_set:
-                logging.debug(f"Line number: {line_number + 1} Line: {line.strip()}")
-                modified_lines_within_blocks.append(line.strip())
+            line_stripped = line.strip()
+            if (line_number + 1, line_stripped) in modified_lines_set:
+                logging.debug(f"Line number: {line_number + 1} Line: {line_stripped}")
+                modified_lines_within_blocks.append(line_stripped)
 
     return results
+
 
 def scan_files(project_path: str = dir_path_mock_project) -> dict:
     """
