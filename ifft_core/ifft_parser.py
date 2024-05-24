@@ -183,12 +183,12 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
     return results
 
 def get_modified_files():
-        result = subprocess.run(['git', 'diff', '--cached', '--name-only', '--diff-filter=ACM'], capture_output=True, text=True)
+    result = subprocess.run(['git', 'diff', '--cached', '--name-only', '--diff-filter=ACM'], capture_output=True, text=True)
     return result.stdout.splitlines()
 
 
 
-def scan_files(project_path: str = dir_path_mock_project) -> dict:
+def scan_files(project_path: str = dir_path_mock_project, auto_mode: argparse.Namespace = None) -> dict:
     """
         Scan the repository for modified Python files and return the results in a dictionary.
         
