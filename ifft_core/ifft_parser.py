@@ -183,7 +183,9 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
     return results
 
 def get_modified_files():
-    pass
+        result = subprocess.run(['git', 'diff', '--cached', '--name-only', '--diff-filter=ACM'], capture_output=True, text=True)
+    return result.stdout.splitlines()
+
 
 
 def scan_files(project_path: str = dir_path_mock_project) -> dict:
