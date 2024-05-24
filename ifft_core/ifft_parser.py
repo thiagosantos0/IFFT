@@ -123,7 +123,8 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
     file_path = os.path.join(project_path, filename)
     logging.debug(f"{Fore.GREEN} File path: {file_path} {Style.RESET_ALL}")
 
-    lines = open(file_path).readlines()
+    with open(file_path) as f:
+        lines = f.readlines()
 
     ifft_if_pattern = re.compile(r'#\s*IFFT\.If', re.IGNORECASE)
     ifft_then_pattern = re.compile(r'#\s*IFFT\.Then\(\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)', re.IGNORECASE)
