@@ -4,6 +4,8 @@ from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 import os
 import logging
 import re
+import subprocess
+import argparse
 from colorama import Fore, Style
 from dotenv import load_dotenv
 
@@ -44,7 +46,7 @@ def validate_associated_file(associated_file_name: str) -> bool:
     logging.info(f"{Fore.YELLOW} Associated file: {associated_file_name} found {Style.RESET_ALL}")
     return True
 
-def get_modified_lines(repo: str, filename: str) -> set:
+def get_modified_lines(repo: str, filename: str, auto_mode: argparse.Namespace) -> set:
     """
         Get a set of modified lines for the given filename.
 
@@ -66,7 +68,14 @@ def get_modified_lines(repo: str, filename: str) -> set:
 
     """
     modified_lines = set()
-    diff_text = repo.git.diff(None, filename)
+    diff_text = ""
+
+    if not auto_mode:
+        diff_text = repo.git.diff(None, filename)
+
+    else:
+        diff_text = repo.git.diff('HEAD', filename)
+
     diff_lines = diff_text.split('\n')
     line_number = 0
 
@@ -173,6 +182,9 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
 
     return results
 
+def get_modified_files():
+    pass
+
 
 def scan_files(project_path: str = dir_path_mock_project) -> dict:
     """
@@ -223,12 +235,21 @@ def scan_files(project_path: str = dir_path_mock_project) -> dict:
         logging.error(f"{Fore.RED} Failed to load repository: {e} {Style.RESET_ALL}")
         return results_dict
 
-    unstaged_files = [item.a_path for item in repo.index.diff(None)]
+    modified_files = []
+    if not auto_mode:
+        modified_files = [item.a_path for item in repo.index.diff(None)]
+    else:
+        modified_files = get_modified_files()
 
-    for filename in unstaged_files:
+    logging.info(f"{Fore.GREEN} Modified files found {modified_files}")
+
+    for filename in modified_files:
         if filename.endswith(".py"):
-            modified_lines_set = get_modified_lines(repo, filename)
+            logging.info(f"{Fore.GREEN} FIRST CHECKPOINT {Style.RESET_ALL}")
+            modified_lines_set = get_modified_lines(repo, filename, auto_mode)
             results_dict[filename] = scan_file(project_path, filename, modified_lines_set)
 
+
+    logging.info(f"{Fore.GREEN} SECOND CHECKPOINT {Style.RESET_ALL}")
     return results_dict
 
