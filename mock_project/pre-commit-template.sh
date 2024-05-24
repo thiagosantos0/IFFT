@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# This is a pre-commit template configuration that can be used for any project with
+# just minor changes
+
+PROJECT_DIR=$(pwd)
+
+# Path to the IFFT script 
+IFFT_SCRIPT_PATH="../ifft.py"
+
+# Checking for Python files in staging area
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$')
+
+# If we don't have any staged files, the program can end
+if [ -z "$STAGED_FILES" ]; then
+    exit 0
+fi
+
+# Now going to the project directory
+cd "$PROJECT_DIR"
+
+# Running IFFT script with auto_mode flag and getting the output
+OUTPUT=$(python3 "$IFFT_SCRIPT_PATH" --auto 2>&1)
+IFFT_EXIT_CODE=$?
+
+# Show the output
+echo "$OUTPUT"
+
+# Check IFFT output
+# If auto_mode is beeing used and a change is identified inside a IFFT block
+# the program will ask (before commit - this is the reason why this bash script
+# is for pre-commit hook) if he wants to continue with te commit or abort.
+if [ $IFFT_EXIT_CODE -ne 0 ]; then
+    echo "IFFT check detected changes in the blocks."
+
+    read -p "Changes detected in IFFT blocks. Do you want to continue with the commit? (y/n): " CONTINUE_COMMIT < /dev/tty
+
+    if [[ "$CONTINUE_COMMIT" != "y" && "$CONTINUE_COMMIT" != "Y" ]]; then
+        echo "Commit aborted."
+        exit 1
+    fi
+fi
+
+# Succesfull execution
+exit 0
+
+
