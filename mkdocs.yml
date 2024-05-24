@@ -15,5 +15,6 @@ plugins:
 
 nav:
   - index.md
+  - Automode config: configuration.md
   - Tutorial: 'tutorial-example.md'
   - reference.md
