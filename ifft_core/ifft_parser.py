@@ -130,6 +130,8 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
             in_block = True
             block_start = line_number
             block_content += line
+            modified_lines_within_blocks = []
+
         elif line.strip().startswith("#IFFT.Then"):
             logging.info(f"{Fore.YELLOW} Exiting IFFT block {line} + {Style.RESET_ALL}")
             associated_file = line.strip().split('(')[1].split(')')[0]
@@ -154,10 +156,11 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
             logging.info(f"{Fore.YELLOW} Block end found at line: {block_end} {Style.RESET_ALL}")
             in_block = False
             block_content = ""
-            modified_lines_within_blocks = []
+
         elif in_block:
             block_content += line
-            if line.strip() in modified_lines_set:
+            if (line_number + 1, line.strip()) in modified_lines_set:
+                logging.debug(f"Line number: {line_number + 1} Line: {line.strip()}")
                 modified_lines_within_blocks.append(line.strip())
 
     return results
