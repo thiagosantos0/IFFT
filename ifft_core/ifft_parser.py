@@ -76,6 +76,10 @@ def get_modified_lines(repo: str, filename: str, auto_mode: argparse.Namespace) 
     else:
         diff_text = repo.git.diff('HEAD', filename)
 
+    logging.info(f"{Fore.BLUE} DIFF TEXT: {diff_text} {Style.RESET_ALL}")
+    logging.info(f"{Fore.BLUE} REPO: {repo} {Style.RESET_ALL}")
+    logging.info(f"{Fore.BLUE} FILENAME: {filename} {Style.RESET_ALL}")
+
     diff_lines = diff_text.split('\n')
     line_number = 0
 
@@ -131,6 +135,8 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
     logging.debug(f"{Fore.GREEN} Scanning file: {filename} {Style.RESET_ALL}")
     file_path = os.path.join(project_path, filename)
     logging.debug(f"{Fore.GREEN} File path: {file_path} {Style.RESET_ALL}")
+    logging.debug(f"{Fore.GREEN} Modified lines set: {modified_lines_set} {Style.RESET_ALL}")
+
 
     with open(file_path) as f:
         lines = f.readlines()
