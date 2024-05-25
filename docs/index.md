@@ -29,3 +29,15 @@ IFFT is a Python linter to help you handle correlated changes across your codeba
       ├── filler_file
       └── test_ifft_core.py
 ```
+
+## Reccomended project structure
+
+```
+  ── IFFT 
+      ├── ifft_core 
+          └── ... 
+      ├── ... 
+      ├── ifft.py
+      └── your_project 
+```
+
