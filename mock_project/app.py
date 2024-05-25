@@ -22,6 +22,8 @@ def foo7(number1: int, number2: int) -> int:
 def insideFunction() -> None:
     print("This is a new function added inside of an IFFT block!")
 
+test
+
 #IFFT.Then("file1.py", "foo1_related_block")
 
 def foo2(number1: int, number2: int) -> int:

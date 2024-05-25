@@ -1,4 +1,4 @@
-This section of documentaion consists in step-by-step example of the code usage **in mock project**.
+This section of documentaion consists in step-by-step example of the code usage **in mock project** using *manual mode*.
 The idea here is to give a glimpse of how the tool can be used in a real project.
 
 Here is the following `mock project` structure:
