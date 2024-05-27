@@ -1,0 +1,755 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../tutorial-example-manual/">
+      
+      
+        <link rel="next" href="../reference/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.23">
+    
+    
+      
+        <title>Example - Automode - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#apppy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Example - Automode
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IFFT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-example-manual/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Example - Manual
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Example - Automode
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Example - Automode
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apppy" class="md-nav__link">
+    <span class="md-ellipsis">
+      app.py
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file1py" class="md-nav__link">
+    <span class="md-ellipsis">
+      file1.py
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-0-pre-commit-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 0: pre-commit configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-checking-if-the-auto-mode-is-enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Checking if the "auto-mode" is enabled
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-triggering-the-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Triggering the tool
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-making-a-change-outside-a-ifft-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Making a change outside a IFFT block:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-making-a-change-inside-a-ifft-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Making a change inside a IFFT block:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final message
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apppy" class="md-nav__link">
+    <span class="md-ellipsis">
+      app.py
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file1py" class="md-nav__link">
+    <span class="md-ellipsis">
+      file1.py
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-0-pre-commit-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 0: pre-commit configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-checking-if-the-auto-mode-is-enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Checking if the "auto-mode" is enabled
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-triggering-the-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Triggering the tool
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-making-a-change-outside-a-ifft-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Making a change outside a IFFT block:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-making-a-change-inside-a-ifft-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Making a change inside a IFFT block:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final message
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Example - Automode</h1>
+
+<p>This section of documentaion consists in step-by-step example of the code usage <strong>in mock project</strong> using <em>automode</em>.
+The idea here is to give a glimpse of how the tool can be used in a real project.</p>
+<p>Here is the following <code>mock project</code> structure:</p>
+<pre><code>../mock_project/
+├── app.py
+├── file1.py
+└── README.md
+</code></pre>
+<p>The content of the files are as follows:</p>
+<h4 id="apppy"><strong>app.py</strong></h4>
+<pre><code class="language-python">import os
+
+file_dir = os.path.dirname(__file__)
+
+
+#IFFT.If(foo1 block)
+def foo1(number1: int, number2: int) -&gt; int:
+    # Adding a change for testing purposes
+    return number1 + number2
+
+# Adding a change for testing purposes
+
+def foo5(number1: int, number2: int) -&gt; int:
+    return number1 ** number2
+
+def foo6(number1: int, number2: int) -&gt; int:
+    return number1 % number2
+
+def foo7(number1: int, number2: int) -&gt; int:
+    return number1 // number2
+
+#IFFT.Then(&quot;file1.py&quot;, &quot;foo1_related_block&quot;)
+
+def foo2(number1: int, number2: int) -&gt; int:
+    return number1 - number2
+
+def foo3(number1: int, number2: int) -&gt; int:
+    return number1 * number2
+
+def foo4(number1: int, number2: int) -&gt; int:
+    return number1 / number2
+
+def foo8(number1: int, number2: int) -&gt; int:
+    return 2*number1 + number2
+
+# main
+
+print(foo1(1, 2))
+print(foo2(1, 2))
+print(foo3(1, 2))
+
+</code></pre>
+<h4 id="file1py"><strong>file1.py</strong></h4>
+<pre><code class="language-python">#IFFT.If This is a test comment
+
+print('Hello world!')
+
+#IFFT.Then (path_to_associated_file, associated_file_ifft_label)
+</code></pre>
+<h3 id="step-0-pre-commit-configuration"><strong>Step 0</strong>: pre-commit configuration</h3>
+<p>In order to use IFFT in <em>automode</em> all you have to do is create a pre-commit file for your project. You can find a pre-filled template that should cover the great majority of the use cases:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# This is a pre-commit template configuration that can be used for any project with
+# just minor changes
+
+PROJECT_DIR=$(pwd)
+
+# Path to the IFFT script 
+IFFT_SCRIPT_PATH=&quot;../ifft.py&quot;
+
+# Checking for Python files in staging area
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$')
+
+# If we don't have any staged files, the program can end
+if [ -z &quot;$STAGED_FILES&quot; ]; then
+    exit 0
+fi
+
+# Now going to the project directory
+cd &quot;$PROJECT_DIR&quot;
+
+# Running IFFT script with auto_mode flag and getting the output
+OUTPUT=$(python3 &quot;$IFFT_SCRIPT_PATH&quot; --auto 2&gt;&amp;1)
+IFFT_EXIT_CODE=$?
+
+# Show the output
+echo &quot;$OUTPUT&quot;
+
+# Check IFFT output
+# If auto_mode is beeing used and a change is identified inside a IFFT block
+# the program will ask (before commit - this is the reason why this bash script
+# is for pre-commit hook) if he wants to continue with te commit or abort.
+if [ $IFFT_EXIT_CODE -ne 0 ]; then
+    echo &quot;IFFT check detected changes in the blocks.&quot;
+
+    read -p &quot;Changes detected in IFFT blocks. Do you want to continue with the commit? (y/n): &quot; CONTINUE_COMMIT &lt; /dev/tty
+
+    if [[ &quot;$CONTINUE_COMMIT&quot; != &quot;y&quot; &amp;&amp; &quot;$CONTINUE_COMMIT&quot; != &quot;Y&quot; ]]; then
+        echo &quot;Commit aborted.&quot;
+        exit 1
+    fi
+fi
+
+# Succesfull execution
+exit 0
+
+</code></pre>
+<p>If you project structure is following the recommended pattern (can be found documentation main page), all you have to fill out is the path to ifft script and it's all setup.</p>
+<!--- Sections with use cases -->
+
+<h3 id="step-1-checking-if-the-auto-mode-is-enabled"><strong>Step 1</strong>: Checking if the "auto-mode" is enabled</h3>
+<p><em>You can run the following command on your terminal or alternatively, you can open it in any
+text editor.</em></p>
+<pre><code class="language-bash">$ cat ifft_config.json
+</code></pre>
+<p>You should see something like this:
+<img alt="image1" src="" /></p>
+<p>This is where IFFT configuration can be changed, as this tutorial aims to show how <em>automode</em>
+works I will switch it to <em>true</em>.</p>
+<h3 id="step-2-triggering-the-tool"><strong>Step 2</strong>: Triggering the tool</h3>
+<p>The main idea of <em>automode</em> is to run IFFT automatically. More especifically just before the 
+creation of a commit. In <em>automode</em> IFFT will run every time a new commit is created and will
+give you one of the two outputs:
+  - A message saying that none change was found inside a IFFT block.
+    - Commit is made normally.</p>
+<ul>
+<li>A message saying that changes were found inside IFFT blocks and asking you
+    if you want to continue with the commit anyways or to abort:<ul>
+<li>If you take (y) as option (anything different of (n or N) actually) the commit action
+  will happen normally.</li>
+</ul>
+</li>
+</ul>
+<p>Thats the process in summary. Now, follow the practical examples:</p>
+<h3 id="step-1-making-a-change-outside-a-ifft-block"><strong>Step 1</strong>: Making a change outside a IFFT block:</h3>
+<p>We'll add a new function inside the <code>app.py</code> file, outside any IFFT block. The new function is as follows:</p>
+<pre><code class="language-python">import os
+file_dir = os.path.dirname(__file__)
+
+#IFFT.If(foo1 block)
+
+...
+
+#IFFT.Then(&quot;file1.py&quot;, &quot;foo1_related_block&quot;)
+
+...
+
+def outsideFunction() -&gt; None:
+    print(&quot;This is a new function added outside of any IFFT block!&quot;)
+
+# main
+
+...
+</code></pre>
+<p>After the change addition, we have the following as the output for <em>git status</em> command:</p>
+<pre><code class="language-bash">$ git status 
+</code></pre>
+<p><img alt="image2" src="" /></p>
+<p>As mentioned before, we need to proceed to do a commit in order to have the tool automatically
+triggered, this is done as follow:</p>
+<pre><code class="language-bash">$ git add app.py
+$ git commit -m &quot;Commit message&quot;
+</code></pre>
+<p>As soon as we run the commit command, we should have the feature beeing automatically and,
+in this case, we should have something like this:
+<img alt="image3" src="" /></p>
+<p>Note that the change cannot be found in the debug output, since it is not inside an IFFT block.
+For this reason the program just show a empty list of modified lines inside IFFT block and says
+that <em>"No changes detected in IFFT blocks"</em>. </p>
+<p><strong>Note 1</strong>: <em>You can ignore this .env file for this example.</em>
+<strong>Note 2</strong>: <em>Please note that the commit is done normally in this case.</em></p>
+<h3 id="step-2-making-a-change-inside-a-ifft-block"><strong>Step 2</strong>: Making a change inside a IFFT block:</h3>
+<p>Now, we'll add a new function inside the <code>app.py</code> file, inside the <code>foo1</code> IFFT block. The new function is as follows:</p>
+<p>Just a reminder before we proceed. In this stage, we have already commited the first change (outside one) so it will not appear in the diff for this section.</p>
+<p><img alt="image4" src="" /></p>
+<pre><code class="language-python">import os
+file_dir = os.path.dirname(__file__)
+
+#IFFT.If(foo1 block)
+
+...
+
+def insideFunction() -&gt; None:
+    print(&quot;This is a new function added inside of an IFFT block!&quot;)
+
+#IFFT.Then(&quot;file1.py&quot;, &quot;foo1_related_block&quot;)
+
+...
+
+</code></pre>
+<p>Again, doing the same process of the last example (git add followed by git commit command)
+we have the following:</p>
+<p><img alt="image5" src="" /></p>
+<p>Note that now the tool detected the change and now recommends the developer to take a look at the associated file <code>file1.py</code> (more specefically in <code>foo1_related_block</code>) to see if any changes are needed.</p>
+<p>Not only that, now the tool also asks the developer if he wants to go on with his commit or abort
+the commit. If it's the case where the developer didn't know that those two files are related or
+forgot about it, normally he will at least check if everything is ok, so he'll probably abort it
+at first. After take a look in the code and change what is necessary or he came to an conclusion
+that a change is not necessary, he can go on with the commit.</p>
+<!--- Ending the tutorial section -->
+
+<h3 id="final-message"><strong>Final message</strong></h3>
+<p>This is the end of the tutorial. The tool can be used in a real project to help developers to keep track of the changes and to make sure that the changes are propagated to the associated files. This tutorial isn't a exact one but it should be enough to give a glimpse of how the tool can be used in a real project.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ebd0bdb7.min.js"></script>
+      
+    
+  </body>
+</html>
