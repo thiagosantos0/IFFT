@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.23">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
     
     
       
@@ -612,7 +612,7 @@ text editor.</em></p>
 <pre><code class="language-bash">$ cat ifft_config.json
 </code></pre>
 <p>You should see something like this:
-<img alt="image1" src="" /></p>
+<img alt="image1" src="https://i.postimg.cc/sgJv0z51/ifft-confi.png" /></p>
 <p>This is where IFFT configuration can be changed, as this tutorial aims to show how <em>automode</em>
 works I will switch it to <em>true</em>.</p>
 <h3 id="step-2-triggering-the-tool"><strong>Step 2</strong>: Triggering the tool</h3>
@@ -653,15 +653,15 @@ def outsideFunction() -&gt; None:
 <p>After the change addition, we have the following as the output for <em>git status</em> command:</p>
 <pre><code class="language-bash">$ git status 
 </code></pre>
-<p><img alt="image2" src="" /></p>
+<p><img alt="image2" src="https://i.postimg.cc/2yfYDbDY/git-status.png" /></p>
 <p>As mentioned before, we need to proceed to do a commit in order to have the tool automatically
 triggered, this is done as follow:</p>
 <pre><code class="language-bash">$ git add app.py
 $ git commit -m &quot;Commit message&quot;
 </code></pre>
-<p>As soon as we run the commit command, we should have the feature beeing automatically and,
+<p>As soon as we run the commit command, we should have the feature triggering automatically and,
 in this case, we should have something like this:
-<img alt="image3" src="" /></p>
+<img alt="image3" src="https://i.postimg.cc/9F6djc4p/git-commit.png" /></p>
 <p>Note that the change cannot be found in the debug output, since it is not inside an IFFT block.
 For this reason the program just show a empty list of modified lines inside IFFT block and says
 that <em>"No changes detected in IFFT blocks"</em>. </p>
@@ -670,7 +670,7 @@ that <em>"No changes detected in IFFT blocks"</em>. </p>
 <h3 id="step-2-making-a-change-inside-a-ifft-block"><strong>Step 2</strong>: Making a change inside a IFFT block:</h3>
 <p>Now, we'll add a new function inside the <code>app.py</code> file, inside the <code>foo1</code> IFFT block. The new function is as follows:</p>
 <p>Just a reminder before we proceed. In this stage, we have already commited the first change (outside one) so it will not appear in the diff for this section.</p>
-<p><img alt="image4" src="" /></p>
+<p><img alt="image4" src="https://i.postimg.cc/fL1cTs2D/git-diff.png" /></p>
 <pre><code class="language-python">import os
 file_dir = os.path.dirname(__file__)
 
@@ -688,7 +688,7 @@ def insideFunction() -&gt; None:
 </code></pre>
 <p>Again, doing the same process of the last example (git add followed by git commit command)
 we have the following:</p>
-<p><img alt="image5" src="" /></p>
+<p><img alt="image5" src="https://i.postimg.cc/tJtsQG8r/ifft-output.png" /></p>
 <p>Note that now the tool detected the change and now recommends the developer to take a look at the associated file <code>file1.py</code> (more specefically in <code>foo1_related_block</code>) to see if any changes are needed.</p>
 <p>Not only that, now the tool also asks the developer if he wants to go on with his commit or abort
 the commit. If it's the case where the developer didn't know that those two files are related or
@@ -748,7 +748,7 @@ that a change is not necessary, he can go on with the commit.</p>
     <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.ebd0bdb7.min.js"></script>
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>
