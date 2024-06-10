@@ -131,7 +131,7 @@ text editor.*
 $ cat ifft_config.json
 ```
 You should see something like this:
-![image1]()
+![image1](https://i.postimg.cc/sgJv0z51/ifft-confi.png)
 
 This is where IFFT configuration can be changed, as this tutorial aims to show how *automode*
 works I will switch it to *true*.
@@ -177,7 +177,7 @@ After the change addition, we have the following as the output for *git status* 
 ```bash
 $ git status 
 ```
-![image2]()
+![image2](https://i.postimg.cc/2yfYDbDY/git-status.png)
 
 
 As mentioned before, we need to proceed to do a commit in order to have the tool automatically
@@ -187,9 +187,9 @@ triggered, this is done as follow:
 $ git add app.py
 $ git commit -m "Commit message"
 ```
-As soon as we run the commit command, we should have the feature beeing automatically and,
+As soon as we run the commit command, we should have the feature triggering automatically and,
 in this case, we should have something like this:
-![image3]()
+![image3](https://i.postimg.cc/9F6djc4p/git-commit.png)
 
 Note that the change cannot be found in the debug output, since it is not inside an IFFT block.
 For this reason the program just show a empty list of modified lines inside IFFT block and says
@@ -203,7 +203,7 @@ Now, we'll add a new function inside the `app.py` file, inside the `foo1` IFFT b
 
 Just a reminder before we proceed. In this stage, we have already commited the first change (outside one) so it will not appear in the diff for this section.
 
-![image4]()
+![image4](https://i.postimg.cc/fL1cTs2D/git-diff.png)
 
 ```python
 import os
@@ -225,7 +225,7 @@ def insideFunction() -> None:
 Again, doing the same process of the last example (git add followed by git commit command)
 we have the following:
 
-![image5]()
+![image5](https://i.postimg.cc/tJtsQG8r/ifft-output.png)
 
 Note that now the tool detected the change and now recommends the developer to take a look at the associated file `file1.py` (more specefically in `foo1_related_block`) to see if any changes are needed.
 
