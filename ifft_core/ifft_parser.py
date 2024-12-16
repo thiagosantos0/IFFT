@@ -9,6 +9,10 @@ import argparse
 from colorama import Fore, Style
 from dotenv import load_dotenv
 
+import sys
+sys.path.append('../')
+from ifft_block.ifft_block_class import IFFTBlock
+
 file_dir = os.path.dirname(__file__)
 dir_path_mock_project = os.path.join(file_dir, '..', 'mock_project')
 
@@ -120,23 +124,22 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
             modified_lines_set (set): A set of modified lines.
 
         Returns:
-            list: A list of results.
+            list[IFFTBlock]: A list of "IFFTBlock" objects.
 
     """
 
+def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list[IFFTBlock]:
     results = []
     in_block = False
     block_content = ""
-    associated_file = ""
+    associated_file_name = ""
+    associated_file_label = ""
     block_start = 0
     block_end = 0
     modified_lines_within_blocks = []
 
-    logging.debug(f"{Fore.GREEN} Scanning file: {filename} {Style.RESET_ALL}")
+    logging.debug(f"Scanning file: {filename}")
     file_path = os.path.join(project_path, filename)
-    logging.debug(f"{Fore.GREEN} File path: {file_path} {Style.RESET_ALL}")
-    logging.debug(f"{Fore.GREEN} Modified lines set: {modified_lines_set} {Style.RESET_ALL}")
-
 
     with open(file_path) as f:
         lines = f.readlines()
@@ -144,47 +147,45 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
     ifft_if_pattern = re.compile(r'#\s*IFFT\.If', re.IGNORECASE)
     ifft_then_pattern = re.compile(r'#\s*IFFT\.Then\(\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)', re.IGNORECASE)
 
-    for line_number, line in enumerate(lines):
+    for line_number, line in enumerate(lines, start=1):
         if ifft_if_pattern.search(line.strip()):
-            logging.debug(f"{Fore.GREEN} Entering IFFT block {line} {Style.RESET_ALL}")
             in_block = True
             block_start = line_number
             block_content += line
-            # block reset
             modified_lines_within_blocks = []
 
         elif ifft_then_pattern.search(line):
-            logging.info(f"{Fore.YELLOW} Exiting IFFT block {line} + {Style.RESET_ALL}")
             match = ifft_then_pattern.search(line)
-            print(f"Match: {match}")
             associated_file_name = match.group(1)
             associated_file_label = match.group(2)
             valid_associated_file = validate_associated_file(associated_file_name)
+
             if not valid_associated_file:
                 associated_file_name = ""
                 associated_file_label = ""
-            logging.info(f"{Fore.YELLOW} Associated file name: {associated_file_name} {Style.RESET_ALL}")
-            logging.info(f"{Fore.YELLOW} Associated file label: {associated_file_label} {Style.RESET_ALL}")
+
             block_end = line_number
 
-            results.append({
-                "block_content": block_content,
-                "associated_file_name": associated_file_name,
-                "associated_file_label": associated_file_label,
-                "modified_lines_within_block": modified_lines_within_blocks
-            })
+            block = IFFTBlock(
+                file_path=file_path,
+                block_content=block_content,
+                associated_file_name=associated_file_name,
+                associated_file_label=associated_file_label,
+                block_start=block_start,
+                block_end=block_end,
+                modified_lines=modified_lines_within_blocks
+            )
+            results.append(block)
 
-            logging.info(f"{Fore.YELLOW} Block content: \n{block_content} {Style.RESET_ALL}")
-            logging.info(f"{Fore.YELLOW} Block end found at line: {block_end} {Style.RESET_ALL}")
+            logging.debug(f"Found IFFTBlock: {block}")
+
             in_block = False
             block_content = ""
 
         elif in_block:
             block_content += line
-            line_stripped = line.strip()
-            if (line_number + 1, line_stripped) in modified_lines_set:
-                logging.debug(f"Line number: {line_number + 1} Line: {line_stripped}")
-                modified_lines_within_blocks.append(line_stripped)
+            if (line_number, line.strip()) in modified_lines_set:
+                modified_lines_within_blocks.append(line.strip())
 
     return results
 
@@ -233,31 +234,34 @@ def scan_files(project_path: str = dir_path_mock_project, auto_mode: argparse.Na
     results_dict = {}
     try:
         repo = Repo(project_path)
+        logging.info(f"Scanning Git repository: {project_path}")
     except NoSuchPathError:
-        logging.error(f"{Fore.RED} The path '{project_path}' does not exist. {Style.RESET_ALL}")
+        logging.error(f"The path '{project_path}' does not exist.")
         return results_dict
     except InvalidGitRepositoryError:
-        logging.error(f"{Fore.RED} The path '{project_path}' is not a valid Git repository. {Style.RESET_ALL}")
+        logging.warning(f"The path '{project_path}' is not a valid Git repository. Skipping Git-specific checks.")
+        # Optionally return or skip additional scanning logic for non-Git directories
         return results_dict
     except Exception as e:
-        logging.error(f"{Fore.RED} Failed to load repository: {e} {Style.RESET_ALL}")
+        logging.error(f"An unexpected error occurred: {e}")
         return results_dict
 
     modified_files = []
     if not auto_mode:
         modified_files = [item.a_path for item in repo.index.diff(None)]
     else:
-        modified_files = get_modified_files()
+        result = subprocess.run(['git', 'diff', '--cached', '--name-only', '--diff-filter=ACM'], capture_output=True, text=True)
+        modified_files = result.stdout.splitlines()
 
-    logging.info(f"{Fore.GREEN} Modified files found {modified_files}")
+    logging.info(f"Modified files found: {modified_files}")
 
     for filename in modified_files:
         if filename.endswith(".py"):
-            logging.info(f"{Fore.GREEN} FIRST CHECKPOINT {Style.RESET_ALL}")
+            logging.info(f"Scanning file: {filename}")
             modified_lines_set = get_modified_lines(repo, filename, auto_mode)
-            results_dict[filename] = scan_file(project_path, filename, modified_lines_set)
+            file_results = scan_file(project_path, filename, modified_lines_set)
+            if file_results:
+                results_dict[filename] = file_results
 
-
-    logging.info(f"{Fore.GREEN} SECOND CHECKPOINT {Style.RESET_ALL}")
     return results_dict
 

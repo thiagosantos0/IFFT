@@ -5,6 +5,11 @@ import os
 from ifft_core.ifft_parser import scan_files
 
 def main(auto_mode=False):
+
+    # Setting debug (REMOVE THIS CODE)
+    logging.getLogger().setLevel(logging.DEBUG)
+    logging.debug("Debug mode enabled.")
+
     logging.debug("Starting IFFT scan.")
     
     config_path = os.path.join(os.path.dirname(__file__), 'ifft_config.json')
@@ -16,6 +21,7 @@ def main(auto_mode=False):
             auto_mode = config.get('auto_mode', auto_mode)
             logging.debug(f"Auto mode set to: {auto_mode}")
     
+
     results = scan_files(auto_mode=auto_mode)
     
     if not results:
@@ -26,21 +32,20 @@ def main(auto_mode=False):
     changes_detected = False
     for file, blocks in results.items():
         for block in blocks:
-            logging.debug(f"Changed identified inside a IFFT block in {file}:\n\n {block['block_content']}")
-            print(f"Modified lines within the block: {block['modified_lines_within_block']}")
-            if block['modified_lines_within_block'] != []:
-                print(f"Should also modify: {block['associated_file_name']}\nBlock label: {block['associated_file_label']} \n")
+            logging.debug(f"Change identified inside an IFFT block in {file}:\n\n {block.block_content}")
+            print(f"Modified lines within the block: {block.modified_lines}")
+            if block.modified_lines != []:
+                print(f"Should also modify: {block.associated_file_name}\nBlock label: {block.associated_file_label} \n")
                 changes_detected = True
                 if auto_mode:
-                    # Error code that indicate changes detected
                     return 1
-    
+
     if changes_detected:
         return 1
-    
+
     print("No changes detected in IFFT blocks")
-    # Error code for successfull execution
     return 0
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run IFFT tool.")
