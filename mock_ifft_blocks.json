@@ -1,0 +1,28 @@
+{
+    "/home/thiagosan/\u00c1rea de Trabalho/IFFT_PLAYGROUND/ifft_core/../mock_project/app.py": [
+        {
+            "associated_file_label": "main_related_block",
+            "block_start": 55,
+            "block_end": 60,
+            "block_content": "#IFFT.If(main block)\nprint(foo1(1, 2))\nprint(foo2(1, 2))\nprint(foo3(1, 2))\nprint(foo4(1, 2))\n#IFFT.Then(\"file1.py\", \"main_related_block\")\n"
+        },
+        {
+            "associated_file_label": "foo3_related_block",
+            "block_start": 39,
+            "block_end": 51,
+            "block_content": "#IFFT.If(foo3 block)\ndef foo4(number1: int, number2: int) -> int:\n    return number1 / number2\n\ndef foo8(number1: int, number2: int) -> int:\n    return 2*number1 + number2\n\ndef outsideFunction() -> None:\n    print(\"This is a new function added outside of any IFFT block!\")\n\ndef outsideFunction2() -> None:\n    print(\"This is another function added outside of any IFFT block!\")\n#IFFT.Then(\"file1.py\", \"foo3_related_block\")\n"
+        },
+        {
+            "associated_file_label": "foo2_related_block",
+            "block_start": 29,
+            "block_end": 37,
+            "block_content": "#IFFT.If(foo2 block)\n\ndef foo2(number1: int, number2: int) -> int:\n    return number1 - number2\n\ndef foo3(number1: int, number2: int) -> int:\n    return number1 * number2\n\n#IFFT.Then(\"file1.py\", \"foo2_related_block\")\n"
+        },
+        {
+            "associated_file_label": "foo1_related_block",
+            "block_start": 6,
+            "block_end": 27,
+            "block_content": "#IFFT.If(foo1 block)\ndef foo1(number1: int, number2: int) -> int:\n    # Adding a change for testing purposes\n    return number1 + number2\n\n# Adding a change for testing purposes\n# Adding another change for testing purposes\n# Adding another change for testing purposes 2\n\ndef foo5(number1: int, number2: int) -> int:\n    return number1 ** number2\n\ndef foo6(number1: int, number2: int) -> int:\n    return number1 % number2\n\ndef foo7(number1: int, number2: int) -> int:\n    return number1 // number2\n\ndef foo9(number1: int, number2: int) -> int:\n    return 2*number1 - number2\n\n#IFFT.Then(\"file1.py\", \"foo1_related_block\")\n"
+        }
+    ]
+}
