@@ -4,14 +4,33 @@ import logging
 import os
 from ifft_core.ifft_parser import scan_files
 
+def load_config():
+    """Load the IFFT configuration file."""
+    config_path = os.path.join(os.path.dirname(__file__), 'ifft_config.json')
+    if os.path.exists(config_path):
+        with open(config_path) as config_file:
+            return json.load(config_file)
+    return {}
+
+
 def main(auto_mode=False):
 
-    # Setting debug (REMOVE THIS CODE)
-    logging.getLogger().setLevel(logging.DEBUG)
-    logging.debug("Debug mode enabled.")
+    config = load_config()
+    logging.debug(f"Configurations loaded: {config}")
 
+    # Setting debug (REMOVE THIS CODE)
+    # logging.getLogger().setLevel(logging.DEBUG)
+    # logging.debug("Debug mode enabled.")
+
+    debug_mode = config.get('debug_mode', False)
     logging.debug("Starting IFFT scan.")
+
+    if debug_mode:
+        logging.getLogger().setLevel(logging.DEBUG)
+        logging.debug("Debug mode enabled.")
     
+
+    # Remove this code section once config logic is implemented
     config_path = os.path.join(os.path.dirname(__file__), 'ifft_config.json')
     logging.debug(f"Config path: {config_path}")
     
