@@ -2,6 +2,7 @@ import argparse
 import json
 import logging
 import os
+import time
 from block_manager.block_manager_class import BlockManager
 from ifft_core.ifft_parser import scan_files
 
@@ -24,6 +25,7 @@ def main(auto_mode=False):
     debug_mode = config.get('debug_mode', False)
     auto_mode = config.get('auto_mode', False)
     show_active_blocks = config.get('show_active_blocks', False)
+    extract_ifft_content = config.get('extract_ifft_blocks_content', False)
 
     if debug_mode:
         logging.getLogger().setLevel(logging.DEBUG)
@@ -34,13 +36,6 @@ def main(auto_mode=False):
     config_path = os.path.join(os.path.dirname(__file__), 'ifft_config.json')
     logging.debug(f"Config path: {config_path}")
     
-    # if os.path.exists(config_path):
-    #     with open(config_path) as config_file:
-    #         config = json.load(config_file)
-    #         auto_mode = config.get('auto_mode', auto_mode)
-    #         logging.debug(f"Auto mode set to: {auto_mode}")
-    
-
     logging.debug("Starting IFFT scan.")
     results = scan_files(auto_mode=auto_mode)
 
@@ -62,6 +57,23 @@ def main(auto_mode=False):
         # Feature: Get total active blocks in the project
         if show_active_blocks:
             block_manager.get_block_count()
+
+
+        # ---------------------------------------------------
+        # Feature: Extract IFFT block content and save it to a "storage_file"
+        # default name is "ifft_blocks.json"
+
+        if extract_ifft_content:
+            print("[ Extract Content Mode ]")
+            print("Extracting IFFT block content...")
+            time.sleep(1)
+            logging.debug("Extracting IFFT block content...")
+            for file_name, blocks in results.items():
+                    block_manager.extract_blocks(file_name, blocks)
+            return 0
+
+        # ---------------------------------------------------
+
 
     
     changes_detected = False

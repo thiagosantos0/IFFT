@@ -100,34 +100,6 @@ def get_modified_lines(repo: str, filename: str, auto_mode: argparse.Namespace) 
     return modified_lines
 
 
-def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list:
-    """
-        Scan the file for IFFT blocks and return the results.
-
-        Example:
-            >>>file1.py:\n
-                #IFFT.If\n
-                    + line1\n
-                    + line2\n
-                    + line3
-                #IFFT.Then("foo_file.py", "foo_label")
-                
-            >>>scan_file(project_path, file1.py, {'line1', 'line2', 'line3'})\n
-                [{'block_content': '...',
-                  'associated_file_name': 'foo_file.py',
-                  'associated_file_label': 'foo_label',
-                  'modified_lines_within_block': {'line1', 'line2', 'line3'}}]
-
-        Args:
-            project_path (str): A string corresponding to the project path.
-            filename (str): A string corresponding to the filename.
-            modified_lines_set (set): A set of modified lines.
-
-        Returns:
-            list[IFFTBlock]: A list of "IFFTBlock" objects.
-
-    """
-
 def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list[IFFTBlock]:
     results = []
     in_block = False

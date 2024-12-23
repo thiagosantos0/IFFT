@@ -60,20 +60,22 @@ class BlockManager:
         if file_name not in self.block_data:
             self.block_data[file_name] = []
 
-        with open(file_name, "r") as file:
-            lines = file.readlines()
 
         for block in blocks:
-            block_start = block.block_start - 1  # Convert to zero-based index
-            block_end = block.block_end - 1
+            # Getting the full_path of the file in "block.file_path" field
+            with open(block.file_path, "r") as file:
+                lines = file.readlines()
 
-            block_content = "".join(lines[block_start:block_end + 1])
-            self.block_data[file_name].append({
-                "associated_file_label": block.associated_file_label,
-                "block_start": block.block_start,
-                "block_end": block.block_end,
-                "block_content": block_content
-            })
+                block_start = block.block_start - 1  # Convert to zero-based index
+                block_end = block.block_end - 1
+
+                block_content = "".join(lines[block_start:block_end + 1])
+                self.block_data[file_name].append({
+                    "associated_file_label": block.associated_file_label,
+                    "block_start": block.block_start,
+                    "block_end": block.block_end,
+                    "block_content": block_content
+                })
 
         self.save_metadata()
         print(f"Extracted {len(blocks)} blocks from {file_name}.")
