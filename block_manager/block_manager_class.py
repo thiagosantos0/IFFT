@@ -4,34 +4,39 @@ from colorama import Fore, Style
 import os
 
 class BlockManager:
-    def __init__(self, storage_file="ifft_blocks.json", mock_storage_file="mock_ifft_blocks.json"):
+    def __init__(self, show_active_blocks, storage_file="ifft_blocks.json", mock_storage_file="mock_ifft_blocks.json"):
         self.storage_file = storage_file
         self.mock_storage_file = mock_storage_file
-        # Checking if there is existing metadata
-        if os.path.exists(self.storage_file):
-            logging.info(f"{Fore.GREEN} Loading metadata from {self.storage_file}. {Style.RESET_ALL}")
-            with open(self.storage_file, "r") as f:
-                self.block_data = json.load(f)
+        self.show_active_blocks = show_active_blocks
 
-        else:
-            print(f"{Fore.YELLOW} No metadata file found at {self.storage_file} or {self.storage_file} don't exists. {Style.RESET_ALL}")
-            # Asking if user want to load mock metadata
-            answer = input("Do you want to load mock metadata? (y/n): ")
-            if answer.lower() == "y":
-                logging.warning(f"{Fore.YELLOW} Trying to load mock metadata from {self.mock_storage_file}. {Style.RESET_ALL}")
-                if os.path.exists(self.mock_storage_file):
-                    with open(self.mock_storage_file, "r") as f:
-                        self.block_data = json.load(f)
-                else:
-                    logging.warning(f"{Fore.YELLOW} No mock metadata file found at {self.mock_storage_file}. {Style.RESET_ALL}")
-                    logging.warning(f"{Fore.YELLOW} Exiting the program. {Style.RESET_ALL}")
-                    exit()
+        if self.show_active_blocks:
+            # Checking if there is existing metadata
+            if os.path.exists(self.storage_file):
+                logging.info(f"{Fore.GREEN} Loading metadata from {self.storage_file}. {Style.RESET_ALL}")
+                with open(self.storage_file, "r") as f:
+                    self.block_data = json.load(f)
 
             else:
-                print(f"{Fore.YELLOW} Exiting the program. {Style.RESET_ALL}")
-                exit()
+                print(f"{Fore.YELLOW} No metadata file found at {self.storage_file} or {self.storage_file} don't exists. {Style.RESET_ALL}")
+                # Asking if user want to load mock metadata
+                answer = input("Do you want to load mock metadata? (y/n): ")
+                if answer.lower() == "y":
+                    logging.warning(f"{Fore.YELLOW} Trying to load mock metadata from {self.mock_storage_file}. {Style.RESET_ALL}")
+                    if os.path.exists(self.mock_storage_file):
+                        with open(self.mock_storage_file, "r") as f:
+                            self.block_data = json.load(f)
+                    else:
+                        logging.warning(f"{Fore.YELLOW} No mock metadata file found at {self.mock_storage_file}. {Style.RESET_ALL}")
+                        logging.warning(f"{Fore.YELLOW} Exiting the program. {Style.RESET_ALL}")
+                        exit()
 
-            # self.block_data = {}
+                else:
+                    print(f"{Fore.YELLOW} Exiting the program. {Style.RESET_ALL}")
+                    exit()
+
+        else:
+            print(f"{Fore.YELLOW} Active blocks will not be shown. {Style.RESET_ALL}")
+            self.block_data = {}
 
 
     def save_metadata(self):

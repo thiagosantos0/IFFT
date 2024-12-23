@@ -55,7 +55,7 @@ def main(auto_mode=False):
     # All options besides debug_mode will be disabled in auto_mode version
     if not auto_mode:
         # Create a block manager object to manage the blocks
-        block_manager = BlockManager()
+        block_manager = BlockManager(show_active_blocks=show_active_blocks)
 
 
         # ---------------------------------------------------
