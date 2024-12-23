@@ -14,16 +14,14 @@ def load_config():
 
 
 def main(auto_mode=False):
-
+    
+    # Parsing the configuration file
     config = load_config()
     logging.debug(f"Configurations loaded: {config}")
 
-    # Setting debug (REMOVE THIS CODE)
-    # logging.getLogger().setLevel(logging.DEBUG)
-    # logging.debug("Debug mode enabled.")
-
+    # Tool opt-in configs
     debug_mode = config.get('debug_mode', False)
-    logging.debug("Starting IFFT scan.")
+    auto_mode = config.get('auto_mode', False)
 
     if debug_mode:
         logging.getLogger().setLevel(logging.DEBUG)
@@ -41,6 +39,7 @@ def main(auto_mode=False):
             logging.debug(f"Auto mode set to: {auto_mode}")
     
 
+    logging.debug("Starting IFFT scan.")
     results = scan_files(auto_mode=auto_mode)
     
     if not results:
