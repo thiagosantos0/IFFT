@@ -105,27 +105,27 @@ class BlockManager:
         Remove only the IFFT comments from the code, keeping the block content intact.
         Adjusts the block_start and block_end indices to account for removed lines.
         """
-        with open(file_name, "r") as file:
-            lines = file.readlines()
 
         line_offset = 0
         for block in blocks:
-            block_start = block.block_start - 1 - line_offset  # Adjust for previous removals
-            block_end = block.block_end - 1 - line_offset
+            with open(block.file_path, "r") as file:
+                lines = file.readlines()
+                block_start = block.block_start - 1 - line_offset  # Adjust for previous removals
+                block_end = block.block_end - 1 - line_offset
 
-            # Remove opening IFFT comment
-            if lines[block_start].strip().startswith("#IFFT.If"):
-                lines[block_start] = ""
-                line_offset += 1
+                # Remove opening IFFT comment
+                if lines[block_start].strip().startswith("#IFFT.If"):
+                    lines[block_start] = ""
+                    line_offset += 1
 
-            # Remove closing IFFT comment
-            if lines[block_end].strip().startswith("#IFFT.Then"):
-                lines[block_end] = ""
-                line_offset += 1
+                # Remove closing IFFT comment
+                if lines[block_end].strip().startswith("#IFFT.Then"):
+                    lines[block_end] = ""
+                    line_offset += 1
 
-            # Adjust the stored line numbers for this block
-            block.block_start -= 1 if lines[block_start].strip() == "" else 0
-            block.block_end -= 1 if lines[block_end].strip() == "" else 0
+                # Adjust the stored line numbers for this block
+                block.block_start -= 1 if lines[block_start].strip() == "" else 0
+                block.block_end -= 1 if lines[block_end].strip() == "" else 0
 
         with open(file_name, "w") as file:
             file.writelines(lines)
