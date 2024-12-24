@@ -26,6 +26,8 @@ def main(auto_mode=False):
     auto_mode = config.get('auto_mode', False)
     show_active_blocks = config.get('show_active_blocks', False)
     extract_ifft_content = config.get('extract_ifft_blocks_content', False)
+    ifft_disabled = config.get('disable_ifft', False)
+
 
     if debug_mode:
         logging.getLogger().setLevel(logging.DEBUG)
@@ -73,6 +75,15 @@ def main(auto_mode=False):
             return 0
 
         # ---------------------------------------------------
+        # Feature: Disable IFFT mode. This option will remove all IFFT blocks from the project
+        if ifft_disabled:
+            print("[ Disable IFFT Mode ]")
+            print("Cleaning up IFFT blocks trace...")
+            time.sleep(1)
+            logging.debug("All blocks removed with success.")
+            for file_name, blocks in results.items():
+                block_manager.remove_ifft_trace(file_name, blocks)
+            return 0
 
 
     

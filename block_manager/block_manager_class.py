@@ -107,7 +107,9 @@ class BlockManager:
         """
 
         line_offset = 0
+        path = ""
         for block in blocks:
+            path = block.file_path
             with open(block.file_path, "r") as file:
                 lines = file.readlines()
                 block_start = block.block_start - 1 - line_offset  # Adjust for previous removals
@@ -127,7 +129,7 @@ class BlockManager:
                 block.block_start -= 1 if lines[block_start].strip() == "" else 0
                 block.block_end -= 1 if lines[block_end].strip() == "" else 0
 
-        with open(file_name, "w") as file:
+        with open(path, "w") as file:
             file.writelines(lines)
 
         # Save the updated block metadata
