@@ -14,9 +14,47 @@ def load_config():
             return json.load(config_file)
     return {}
 
+def get_project_root():
+    """Retrieve the project root directory from the configuration."""
+    config = load_config()
+    project_root = config.get("project_root", "mock_project")
+    return os.path.abspath(project_root)  # Ensure it's an absolute path
+
+def list_python_files(project_root=None, metadata_dir="block_metadata"):
+    """
+    List all tracked Python files in the user-specified project.
+    First checks the block_metadata directory, and falls back to scanning the project root.
+
+    Args:
+        project_root (str): Root path of the project (default: None).
+        metadata_dir (str): Directory where metadata is stored.
+
+    Returns:
+        List[str]: List of Python file paths.
+    """
+    if not project_root:
+        project_root = get_project_root()
+
+    python_files = []
+
+    # Option 1: Use metadata directory to find tracked files
+    metadata_path = os.path.join(project_root, metadata_dir)
+    if os.path.exists(metadata_path):
+        for metadata_file in os.listdir(metadata_path):
+            if metadata_file.endswith(".json"):
+                python_files.append(os.path.join(project_root, metadata_file.replace(".json", ".py")))
+
+    # Option 2: Fallback to scanning the project root
+    if not python_files:
+        for root, _, files in os.walk(project_root):
+            for file in files:
+                if file.endswith(".py"):
+                    python_files.append(os.path.join(root, file))
+
+    return python_files
+
 
 def main(auto_mode=False):
-    
     # Parsing the configuration file
     config = load_config()
     logging.debug(f"Configurations loaded: {config}")
@@ -33,16 +71,11 @@ def main(auto_mode=False):
         logging.getLogger().setLevel(logging.DEBUG)
         logging.debug("Debug mode enabled.")
     
-
-    # Remove this code section once config logic is implemented
-    config_path = os.path.join(os.path.dirname(__file__), 'ifft_config.json')
-    logging.debug(f"Config path: {config_path}")
-    
-    logging.debug("Starting IFFT scan.")
-    results = scan_files(auto_mode=auto_mode)
+    project_root = get_project_root()
+    logging.debug(f"Project root: {project_root}")
 
 
-    
+    results = scan_files(auto_mode=auto_mode, project_path=project_root)
     if not results:
         logging.debug("No results found from scan_files.")
     else:
@@ -70,8 +103,9 @@ def main(auto_mode=False):
             print("Extracting IFFT block content...")
             time.sleep(1)
             logging.debug("Extracting IFFT block content...")
-            for file_name, blocks in results.items():
-                    block_manager.extract_blocks(file_name, blocks)
+            python_files = list_python_files(project_root)
+            for file_name in python_files:
+                block_manager.extract_blocks(file_name)
             return 0
 
         # ---------------------------------------------------
@@ -81,8 +115,9 @@ def main(auto_mode=False):
             print("Cleaning up IFFT blocks trace...")
             time.sleep(1)
             logging.debug("All blocks removed with success.")
-            for file_name, blocks in results.items():
-                block_manager.remove_ifft_trace(file_name, blocks)
+            python_files = list_python_files(project_root)
+            for file_name in python_files:
+                block_manager.remove_ifft_trace(file_name)
             return 0
 
 
