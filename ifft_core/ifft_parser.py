@@ -16,10 +16,8 @@ from ifft_block.ifft_block_class import IFFTBlock
 file_dir = os.path.dirname(__file__)
 dir_path_mock_project = os.path.join(file_dir, '..', 'mock_project')
 
-load_dotenv()
-log_level = os.getenv("LOG_LEVEL")
-logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# TO-DO(): Move load_config function to helper file and read the debug flag from the configuration file.
 
 def validate_associated_file(associated_file_name: str) -> bool:
     """
