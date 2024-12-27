@@ -1,8 +1,9 @@
 {
+  "project_root":"/home/thiagosan/Área de Trabalho/IFFT/ifft_core/../mock_project/",
   "auto_mode": false,
   "debug_mode": false,
   "show_active_blocks": false,
   "extract_ifft_active_blocks_content": false,
-  "disable_ifft": false,
+  "disable_ifft": true,
   "re_enable_ifft": false
 }
