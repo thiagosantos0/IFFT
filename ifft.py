@@ -5,6 +5,7 @@ import os
 import time
 from block_manager.block_manager_class import BlockManager
 from ifft_core.ifft_parser import scan_files
+from ifft_core.ifft_parser import scan_file
 
 def load_config():
     """Load the IFFT configuration file."""
@@ -106,7 +107,10 @@ def main(auto_mode=False):
             logging.debug("Extracting IFFT block content...")
             python_files = list_python_files(project_root)
             for file_name in python_files:
-                block_manager.extract_blocks(file_name)
+                blocks = scan_file(project_root, file_name, set())
+                print(f"[INFO] blocks: {blocks}")
+                if blocks:
+                    block_manager.extract_blocks(file_name, blocks)
             return 0
 
         # ---------------------------------------------------

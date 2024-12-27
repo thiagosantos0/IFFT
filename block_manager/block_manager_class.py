@@ -114,34 +114,44 @@ class BlockManager:
         print(f"Total active IFFT blocks in the project: {total_blocks}")
         return total_blocks
 
-    
     def extract_blocks(self, file_name, blocks):
         """
-        Extract the content of IFFT blocks and store it in the metadata JSON.
-        Does not remove the blocks from the code.
+        Extract IFFT blocks from a file and store their metadata in the block_metadata directory.
+        The original file content is not modified.
+        
+        Args:
+            file_name (str): The name of the file to extract blocks from.
+            blocks (list): A list of block information (start, end, content, etc.) for the file.
         """
-        if file_name not in self.block_data:
-            self.block_data[file_name] = []
+        logging.info(f"Extracting IFFT blocks for {file_name}...")
+        file_prefix = file_name.split("/")[-1].split(".")[0]
 
+        # Ensure the block_metadata directory exists
+        metadata_dir = os.path.join(get_project_root(), "..", "block_metadata")
+        os.makedirs(metadata_dir, exist_ok=True)
 
+        # Construct the metadata file path
+        metadata_file_path = os.path.join(metadata_dir, f"{file_prefix}.json")
+
+        # Prepare metadata to store
+        metadata = []
         for block in blocks:
-            # Getting the full_path of the file in "block.file_path" field
-            with open(block.file_path, "r") as file:
-                lines = file.readlines()
+            metadata.append({
+                "block_start": block.block_start,
+                "block_end": block.block_end,
+                "block_content": block.block_content,
+                "associated_file_name": block.associated_file_name,
+                "associated_file_label": block.associated_file_label
+            })
 
-                block_start = block.block_start - 1  # Convert to zero-based index
-                block_end = block.block_end - 1
+        print(f"[adesk5] metadata_file_path is: {metadata_file_path}")
+        # Write metadata to the JSON file
+        with open(metadata_file_path, "w") as f:
+            json.dump(metadata, f, indent=4)
+        
+        logging.info(f"Metadata for {file_name} stored in {metadata_file_path}.")
 
-                block_content = "".join(lines[block_start:block_end + 1])
-                self.block_data[file_name].append({
-                    "associated_file_label": block.associated_file_label,
-                    "block_start": block.block_start,
-                    "block_end": block.block_end,
-                    "block_content": block_content
-                })
-
-        self.save_metadata()
-        print(f"Extracted {len(blocks)} blocks from {file_name}.")
+    
 
     def remove_ifft_trace(self, file_name):
         """
