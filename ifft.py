@@ -65,6 +65,7 @@ def main(auto_mode=False):
     show_active_blocks = config.get('show_active_blocks', False)
     extract_ifft_content = config.get('extract_ifft_blocks_content', False)
     ifft_disabled = config.get('disable_ifft', False)
+    restore_ifft = config.get('re_enable_ifft', False)
 
 
     if debug_mode:
@@ -119,6 +120,21 @@ def main(auto_mode=False):
             for file_name in python_files:
                 block_manager.remove_ifft_trace(file_name)
             return 0
+
+        # ---------------------------------------------------
+        # Feature: Restore IFFT mode
+        if restore_ifft:
+            print("[ Restore IFFT Mode ]")
+            print("Restoring IFFT blocks...")
+            time.sleep(1)
+            logging.debug("Restoring IFFT blocks...")
+            python_files = list_python_files(project_root)
+            for file_name in python_files:
+                print(f"[INFO] Restoring blocks for {file_name}")
+                block_manager.restore_ifft_blocks(file_name)
+            logging.debug("All blocks restored successfully.")
+            return 0
+
 
 
     

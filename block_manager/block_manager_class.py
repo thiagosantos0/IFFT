@@ -6,6 +6,55 @@ import os
 
 from helpers.helpers import resolve_path
 
+
+# TO-DO(): Move those functions to a helper module
+def load_config():
+    """Load the IFFT configuration file."""
+    config_path = os.path.join(os.path.dirname(__file__), 'ifft_config.json')
+    if os.path.exists(config_path):
+        with open(config_path) as config_file:
+            return json.load(config_file)
+    return {}
+
+def get_project_root():
+    """Retrieve the project root directory from the configuration."""
+    config = load_config()
+    project_root = config.get("project_root", "mock_project")
+    return os.path.abspath(project_root)  # Ensure it's an absolute path
+
+def list_python_files(project_root=None, metadata_dir="block_metadata"):
+    """
+    List all tracked Python files in the user-specified project.
+    First checks the block_metadata directory, and falls back to scanning the project root.
+
+    Args:
+        project_root (str): Root path of the project (default: None).
+        metadata_dir (str): Directory where metadata is stored.
+
+    Returns:
+        List[str]: List of Python file paths.
+    """
+    if not project_root:
+        project_root = get_project_root()
+
+    python_files = []
+
+    # Option 1: Use metadata directory to find tracked files
+    metadata_path = os.path.join(project_root, metadata_dir)
+    if os.path.exists(metadata_path):
+        for metadata_file in os.listdir(metadata_path):
+            if metadata_file.endswith(".json"):
+                python_files.append(os.path.join(project_root, metadata_file.replace(".json", ".py")))
+
+    # Option 2: Fallback to scanning the project root
+    if not python_files:
+        for root, _, files in os.walk(project_root):
+            for file in files:
+                if file.endswith(".py"):
+                    python_files.append(os.path.join(root, file))
+
+    return python_files
+
 class BlockManager:
     def __init__(self, storage_dir="block_metadata", show_active_blocks=False):
        self.storage_dir = storage_dir
@@ -182,39 +231,55 @@ class BlockManager:
         print(f"[INFO] Removed IFFT blocks from {script_file_name}.")
 
 
-    def restore_ifft_blocks(self, file_name):
+    def restore_ifft_blocks(self, file_name_prefix):
         """
         Restore IFFT annotations and metadata from the JSON file to the original code.
-        Uses adjusted indices to account for removed lines.
+        Handles edge cases where blocks span the last line of the file.
         """
-        if file_name not in self.block_data:
-            print(f"No stored blocks for {file_name}.")
+
+        file_prefix = file_name_prefix.split("/")[-1].split(".")[0]
+        print("[INFO] Restoring IFFT blocks for file:", file_prefix)
+
+        # Construct the path to the metadata file
+        metadata_path = os.path.join("block_metadata", f"{file_prefix}.json")
+        print(f"[INFO] Metadata path: {metadata_path}")
+
+        if not os.path.exists(metadata_path):
+            print(f"[ERROR] Metadata file for {file_prefix} not found.")
             return
 
-        with open(file_name, "r") as file:
-            lines = file.readlines()
+        # Load metadata
+        with open(metadata_path, "r") as f:
+            metadata = json.load(f)
 
-        # Restore each block in reverse order to avoid shifting lines
-        for block in sorted(self.block_data[file_name], key=lambda x: -x["block_start"]):
+        filename = f"{file_prefix}.py"
+        # Read the target file
+        target_file_path = os.path.join(get_project_root(), filename)
+        if not os.path.exists(target_file_path):
+            print(f"[ERROR] Target file {filename} not found.")
+            return
+
+        with open(target_file_path, "r") as f:
+            lines = f.readlines()
+
+        # Restore each block in reverse order
+        for block in sorted(metadata, key=lambda b: -b["block_start"]):
             block_start = block["block_start"] - 1
             block_end = block["block_end"] - 1
 
-            # Validate indices
-            if block_start < 0 or block_start >= len(lines):
-                print(f"Skipping block {block['associated_file_label']} in {file_name}: start index {block_start + 1} out of bounds.")
-                continue
-            if block_end < 0 or block_end >= len(lines):
-                print(f"Skipping block {block['associated_file_label']} in {file_name}: end index {block_end + 1} out of bounds.")
-                continue
-
-            # Insert IFFT annotations back
-            if not lines[block_start].strip().startswith("#IFFT.If"):
+            # Insert the opening marker if it does not already exist
+            if block_start < len(lines) and not lines[block_start].strip().startswith("#IFFT.If"):
                 lines.insert(block_start, f"#IFFT.If({block['associated_file_label']})\n")
-            if not lines[block_end].strip().startswith("#IFFT.Then"):
-                lines.insert(block_end + 1, f"#IFFT.Then(\"{block['associated_file_label']}\")\n")
 
-        with open(file_name, "w") as file:
-            file.writelines(lines)
+            # Insert the closing marker if it does not already exist
+            if block_end >= len(lines):  # Handle edge case for last line
+                lines.append(f"#IFFT.Then(\"{block['associated_file_name']}\", \"{block['associated_file_label']}\")\n")
+            elif not any(line.strip().startswith("#IFFT.Then") and block["associated_file_label"] in line for line in lines[block_end:]):
+                lines.insert(block_end + 1, f"#IFFT.Then(\"{block['associated_file_name']}\", \"{block['associated_file_label']}\")\n")
 
-        print(f"Restored IFFT blocks to {file_name}.")
+        # Write back to the target file
+        with open(target_file_path, "w") as f:
+            f.writelines(lines)
+
+        print(f"[INFO] Successfully restored IFFT blocks to {filename}")
 
