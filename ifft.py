@@ -21,38 +21,70 @@ def get_project_root():
     project_root = config.get("project_root", "mock_project")
     return os.path.abspath(project_root)  # Ensure it's an absolute path
 
-def list_python_files(project_root=None, metadata_dir="block_metadata"):
+def list_python_files(project_root=None, metadata_dir="block_metadata", excluded_folders=None):
     """
-    List all tracked Python files in the user-specified project.
-    First checks the block_metadata directory, and falls back to scanning the project root.
+    List all Python files in the project root, using metadata as a fallback.
 
     Args:
-        project_root (str): Root path of the project (default: None).
-        metadata_dir (str): Directory where metadata is stored.
+        project_root (str): The root directory of the project.
+        metadata_dir (str): The directory where metadata files are stored.
+        excluded_folders (list): List of folder names or paths to exclude.
 
     Returns:
-        List[str]: List of Python file paths.
+        list: A list of Python file paths.
     """
+    # Fallback to dynamically retrieve project root if not provided
     if not project_root:
         project_root = get_project_root()
 
     python_files = []
+    excluded_folders = excluded_folders or []
 
+    print(f"Project root: {project_root}")
+    print(f"Metadata_Dir: {metadata_dir}")
     # Option 1: Use metadata directory to find tracked files
     metadata_path = os.path.join(project_root, metadata_dir)
     if os.path.exists(metadata_path):
         for metadata_file in os.listdir(metadata_path):
             if metadata_file.endswith(".json"):
-                python_files.append(os.path.join(project_root, metadata_file.replace(".json", ".py")))
+                python_file = os.path.join(project_root, metadata_file.replace(".json", ".py"))
+                if os.path.isfile(python_file):
+                    python_files.append(python_file)
 
-    # Option 2: Fallback to scanning the project root
+    # Option 2: Fallback to scanning the project root if no metadata files are found
     if not python_files:
-        for root, _, files in os.walk(project_root):
+        for root, dirs, files in os.walk(project_root):
+            # Exclude specified folders
+            if any(excluded in root for excluded in excluded_folders):
+                continue
+
             for file in files:
                 if file.endswith(".py"):
                     python_files.append(os.path.join(root, file))
 
     return python_files
+
+
+def validate_excluded_folders(project_root, excluded_folders):
+    """
+    Validate that excluded folders exist within the project root.
+
+    Args:
+        project_root (str): The root directory of the project.
+        excluded_folders (list): List of folder names or paths to validate.
+
+    Returns:
+        list: A list of valid excluded folders.
+    """
+    valid_folders = []
+    for folder in excluded_folders:
+        folder_path = os.path.join(project_root, folder)
+        if os.path.isdir(folder_path):
+            valid_folders.append(folder)
+        else:
+            logging.warning(f"Excluded folder '{folder}' does not exist.")
+    return valid_folders
+
 
 
 def main(auto_mode=False):
@@ -67,6 +99,9 @@ def main(auto_mode=False):
     extract_ifft_content = config.get('extract_ifft_blocks_content', False)
     ifft_disabled = config.get('disable_ifft', False)
     restore_ifft = config.get('re_enable_ifft', False)
+    excluded_folders = config.get('excluded_folders', [])
+    excluded_folders = validate_excluded_folders(config.get('project_root'), excluded_folders)
+
 
 
     if debug_mode:
@@ -105,7 +140,7 @@ def main(auto_mode=False):
             print("Extracting IFFT block content...")
             time.sleep(1)
             logging.debug("Extracting IFFT block content...")
-            python_files = list_python_files(project_root)
+            python_files = list_python_files(project_root, excluded_folders=excluded_folders)
             for file_name in python_files:
                 blocks = scan_file(project_root, file_name, set())
                 print(f"[INFO] blocks: {blocks}")
@@ -120,7 +155,7 @@ def main(auto_mode=False):
             print("Cleaning up IFFT blocks trace...")
             time.sleep(1)
             logging.debug("All blocks removed with success.")
-            python_files = list_python_files(project_root)
+            python_files = list_python_files(project_root, excluded_folders=excluded_folders)
             for file_name in python_files:
                 block_manager.remove_ifft_trace(file_name)
             return 0
@@ -132,7 +167,7 @@ def main(auto_mode=False):
             print("Restoring IFFT blocks...")
             time.sleep(1)
             logging.debug("Restoring IFFT blocks...")
-            python_files = list_python_files(project_root)
+            python_files = list_python_files(project_root, excluded_folders=excluded_folders)
             for file_name in python_files:
                 print(f"[INFO] Restoring blocks for {file_name}")
                 block_manager.restore_ifft_blocks(file_name)
