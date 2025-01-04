@@ -8,6 +8,8 @@ def foo1(number1: int, number2: int) -> int:
     # Adding a change for testing purposes
     return number1 + number2
 
+# Modification inside block
+
 # Adding a change for testing purposes
 
 def foo5(number1: int, number2: int) -> int:

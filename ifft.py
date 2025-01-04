@@ -6,6 +6,7 @@ import time
 from block_manager.block_manager_class import BlockManager
 from ifft_core.ifft_parser import scan_files
 from ifft_core.ifft_parser import scan_file
+from ifft_core.ifft_parser import save_results_to_file 
 
 def load_config():
     """Load the IFFT configuration file."""
@@ -117,6 +118,11 @@ def main(auto_mode=False):
         logging.debug("No results found from scan_files.")
     else:
         logging.debug(f"Results found: {results}")
+        # Save results to be consumed by UI API's
+        path = os.path.join(project_root, "..", "IFFT_WEB/data/", "ifft_results.json")
+        print("[THIAGO] path: ", path)
+        save_results_to_file(results, output_file=path)
+        
 
 
     # All options besides debug_mode will be disabled in auto_mode version

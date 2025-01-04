@@ -6,6 +6,7 @@ import logging
 import re
 import subprocess
 import argparse
+import json
 from colorama import Fore, Style
 from dotenv import load_dotenv
 
@@ -16,6 +17,33 @@ from ifft_block.ifft_block_class import IFFTBlock
 file_dir = os.path.dirname(__file__)
 dir_path_mock_project = os.path.join(file_dir, '..', 'mock_project')
 
+
+def save_results_to_file(results, output_file="ifft_results.json"):
+    """
+    Save the scan results to a JSON file for use in the UI.
+
+    Args:
+        results (dict): The dictionary of scan results.
+        output_file (str): The file path to save the results.
+    """
+    def serialize_blocks(blocks):
+        """Convert IFFTBlock objects to dictionaries."""
+        serialized = []
+        for block in blocks:
+            if hasattr(block, '__dict__'):
+                serialized.append(block.__dict__)  # Use __dict__ for custom objects
+            else:
+                serialized.append(block)  # Assume it's already a serializable type
+        return serialized
+
+    serializable_results = {file: serialize_blocks(blocks) for file, blocks in results.items()}
+
+    try:
+        with open(output_file, "w") as f:
+            json.dump(serializable_results, f, indent=4)
+        print(f"Results successfully saved to {output_file}.")
+    except Exception as e:
+        print(f"Failed to save results: {e}")
 
 # TO-DO(): Move load_config function to helper file and read the debug flag from the configuration file.
 
