@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFFT Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+    <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <style>
+        .diff-container {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFFT Blocks</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .added-line {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+        .ifft-block {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .associated-file {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">IFFT Blocks in Project</h1>
+        {% for filename, blocks in results_dict.items() %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h2>{{ filename }}</h2>
+                </div>
+                <div class="card-body">
+                    {% for block in blocks %}
+                        <div class="ifft-block">
+                            <h5 class="card-title">IFFT Block</h5>
+                            <pre>{{ block.block_content }}</pre>
+                            <p><strong>Associated File:</strong> <span class="associated-file">{{ block.associated_file_name }}</span></p>
+                            <p><strong>Associated Label:</strong> {{ block.associated_file_label }}</p>
+                            <h6>Modified Lines Within Block:</h6>
+                            <pre>
+{% for line in block.modified_lines_within_block %}
+<span class="added-line">{{ line }}</span>
+{% endfor %}
+                            </pre>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+
+ 
