@@ -20,22 +20,26 @@
                 console.log("test");
                 const container = document.getElementById('graph-container');
                 options = {
-                    edges: {
-                        color: "#000000",
-                        font: {
-                            size: 12,
-                            align: 'middle'
-                        },
+                  edges: {
+                      width: 2,
+                      color: { color: '#848484' },
+                      font: { align: 'top' }
+                  },
+                  physics: { enabled: true },
+                  interaction: {
+                      dragNodes: true,
+                      zoomView: true,
+                      hover: true
+                  },
+                  nodes: {
+                      shape: 'dot',
+                      size: 20,
+                      font: {
+                          size: 12,
+                          align: 'middle'
                       },
-                    nodes: {
-                        shape: 'dot',
-                        size: 20,
-                        font: {
-                            size: 12,
-                            align: 'middle'
-                        },
-                        borderWidth: 2
-                      },
+                      borderWidth: 2
+                    },
                   };
                 const network = new vis.Network(container, data, options);
             })
