@@ -58,10 +58,15 @@ def graph_data():
                 edges.append({
                     "from": main_file,
                     "to": associated_file,
+                    "label": "Depends on",
+                    "font": {
+                        'color': '#343a40',
+                        'size': 10
+                    },
                 })
 
     # Format nodes for Vis.js
-    nodes_list = [{"id": node, "label": node, "color": "#1f78b4"} for node in nodes]
+    nodes_list = [{"id": node, "label": node, "color": "#1f78b4"} for node in nodes] 
 
     return jsonify({"nodes": nodes_list, "edges": edges})
 
