@@ -4,10 +4,12 @@ from modules.output import output_bp
 from modules.graph import graph_bp
 import os
 import json
+import networkx as nx
 
 
 app = Flask(__name__)
 DATA_PATH = os.path.join(os.path.dirname(__file__), 'data')
+DATA_FILE = os.path.join(DATA_PATH, 'ifft_results.json')
 
 app.register_blueprint(diff_visualizer_bp)
 app.register_blueprint(output_bp)
@@ -30,30 +32,39 @@ def output_data():
 @app.route('/graph-data', methods=['GET'])
 def graph_data():
     """
-    Serve graph-compatible data based on the IFFT results.
+        Generate graph data for file dependecies using stored data.
     """
-    try:
-        with open(os.path.join(DATA_PATH, "ifft_results.json"), "r") as f:
-            results = json.load(f)
+    if not os.path.exists(DATA_FILE):
+        print(f"[ERROR] No results file found. Please run IFFT analysis first.")
+        return jsonify({"error": "No results file found. Please run IFFT analysis first."}), 404
+        
+    # Load results from JSON file
+    with open(DATA_FILE, "r") as f:
+        results = json.load(f)
 
-        nodes = []
-        edges = []
+    print(f"[DEBUG] Results: {results}")
 
-        for file, blocks in results.items():
-            nodes.append({"id": file, "label": file, "color": "#1f78b4"})
+    # Create graph data for nodes and edges
+    nodes = set()
+    edges = []
 
-            for block in blocks:
-                block_label = block["associated_file_label"]
-                associated_file = block["associated_file_name"]
+    for main_file, blocks in results.items():
+        nodes.add(main_file)
+        for block in blocks:
+            print(f"[DEBUG] Block: {block}")
+            associated_file = block.get("associated_file_name")
+            if associated_file:
+                nodes.add(associated_file)
+                edges.append({
+                    "from": main_file,
+                    "to": associated_file,
+                })
 
-                nodes.append({"id": block_label, "label": block_label, "color": "#33a02c"})
-                edges.append({"from": file, "to": block_label, "label": "contains"})
-                nodes.append({"id": associated_file, "label": associated_file, "color": "#1f78b4"})
-                edges.append({"from": block_label, "to": associated_file, "label": "depends on"})
+    # Format nodes for Vis.js
+    nodes_list = [{"id": node, "label": node, "color": "#1f78b4"} for node in nodes]
 
-        return jsonify({"nodes": nodes, "edges": edges})
-    except FileNotFoundError:
-        return jsonify({"error": "Results file not found."}), 404
+    return jsonify({"nodes": nodes_list, "edges": edges})
+
 
 @app.route('/')
 def dashboard():
