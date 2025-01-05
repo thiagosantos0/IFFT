@@ -19,28 +19,36 @@
                 console.log(data);
                 console.log("test");
                 const container = document.getElementById('graph-container');
-                options = {
+                                const options = {
                   edges: {
-                      width: 2,
-                      color: { color: '#848484' },
-                      font: { align: 'top' }
+                      arrows: {
+                          to: { enabled: true, scaleFactor: 1.5 }
+                      },
+                      color: {
+                          color: '#848484',
+                          highlight: '#008bff',
+                          hover: '#007bff'
+                      },
+                      font: { align: 'top' },
+                      smooth: {
+                        type: 'dynamic',
+                      },
+                      width: 2
+                  },
+                  nodes: {
+                      shape: 'dot',
+                      size: 16,
+                      font: { size: 14, color: '#000000' },
+                      borderWidth: 2
                   },
                   physics: { enabled: true },
                   interaction: {
                       dragNodes: true,
                       zoomView: true,
                       hover: true
-                  },
-                  nodes: {
-                      shape: 'dot',
-                      size: 20,
-                      font: {
-                          size: 12,
-                          align: 'middle'
-                      },
-                      borderWidth: 2
-                    },
-                  };
+                  }
+              };
+
                 const network = new vis.Network(container, data, options);
             })
             .catch(error => {
