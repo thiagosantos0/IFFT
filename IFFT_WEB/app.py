@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify
 from modules.diff_visualizer import diff_visualizer_bp 
 from modules.output import output_bp
+from modules.graph import graph_bp
 import os
 import json
 
@@ -10,6 +11,7 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), 'data')
 
 app.register_blueprint(diff_visualizer_bp)
 app.register_blueprint(output_bp)
+app.register_blueprint(graph_bp)
 
 @app.route('/output-data', methods=['GET'])
 def output_data():
