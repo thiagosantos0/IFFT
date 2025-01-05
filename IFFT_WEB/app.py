@@ -66,7 +66,16 @@ def graph_data():
                 })
 
     # Format nodes for Vis.js
-    nodes_list = [{"id": node, "label": node, "color": "#1f78b4"} for node in nodes] 
+    nodes_list = [
+    {
+        "id": node,
+        "label": f"File: {node}" if node.endswith(".py") else f"Block: {node}",
+        "color": "#1f78b4" if node.endswith(".py") else "#33a02c",
+        "title": f"Python file: {node}" if node.endswith(".py") else f"Dependency block: {node}"
+    }
+    for node in nodes
+]
+
 
     return jsonify({"nodes": nodes_list, "edges": edges})
 
