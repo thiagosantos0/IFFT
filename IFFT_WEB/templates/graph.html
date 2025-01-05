@@ -6,9 +6,24 @@
 <div class="container mt-4">
     <h1>Graph Visualization</h1>
     <div class="alert alert-info">Explore the dependencies between files and blocks.</div>
+    
+    <!-- Legend -->
+    <div id="legend" style="margin-bottom: 20px;">
+        <h4>Legend</h4>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <div style="width: 20px; height: 20px; background-color: #1f78b4; margin-right: 10px;"></div>
+            <span>File</span>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <div style="width: 20px; height: 1px; background-color: #848484; margin-right: 10px;"></div>
+            <span>Dependency (edge)</span>
+        </div>
+    </div>
+
+
     <!-- Graph Container -->
     <div id="graph-container" style="height: 600px; border: 1px solid lightgray;"></div>
-
+</div>
 
 <script>
     // Fetch graph data and initialize the graph visualization
