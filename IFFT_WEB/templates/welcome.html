@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Welcome to IFFT Tool</h1>
+    <p>The "If-Flow-Then" (IFFT) tool helps developers manage inter-file dependencies by notifying them of coordinated changes needed across files.</p>
+    
+    <!-- Recent Activity Section -->
+    <div class="card my-4">
+        <div class="card-header bg-info text-white">
+            Recent Activity
+        </div>
+        <div class="card-body">
+            <p>Last scan completed on: <strong>{{ last_modified }}</strong></p>
+        </div>
+    </div>
+
+    <!-- Links to Other Pages -->
+    <div class="list-group">
+        <a href="/output-viewer" class="list-group-item list-group-item-action">Output Viewer</a>
+        <a href="/graph" class="list-group-item list-group-item-action">Graph Viewer</a>
+    </div>
+
+    <!-- Placeholder for Metrics -->
+    <div class="card my-4">
+        <div class="card-header bg-success text-white">
+            Metrics Overview
+        </div>
+        <div class="card-body">
+            <p>Metrics Overview (coming soon). Track progress <a href="https://github.com/thiagosantos0/IFFT/issues/12" target="_blank">here</a>.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
