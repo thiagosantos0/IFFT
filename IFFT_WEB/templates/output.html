@@ -39,44 +39,40 @@
 
 <!-- Modals Container -->
 <div id="modals-container"></div>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const loadingDiv = document.getElementById("loading");
         const tbody = document.getElementById("output-tbody");
         const modalsContainer = document.getElementById("modals-container");
-
-        loadingDiv.style.display = "block";
 
         // Fetch data from backend
         fetch("/output-data")
             .then(response => response.json())
             .then(data => {
-                loadingDiv.style.display = "none";
-
                 Object.entries(data).forEach(([file, blocks], fileIndex) => {
                     blocks.forEach((block, blockIndex) => {
-                        const rowId = `modal-${fileIndex}-${blockIndex}`;
+                        const modalId = `modal-${fileIndex}-${blockIndex}`;
 
-                        // Add row
+                        // Add table row
                         const row = `<tr>
                             <td>${file}</td>
                             <td>${block.associated_file_label}</td>
                             <td>
-                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#${rowId}">
+                                <button class="btn btn-info btn-sm btn-info" data-toggle="modal" data-target="#${modalId}">
                                     View Modified Lines
                                 </button>
+                                <button class="btn btn-primary btn-sm btn-primary" onclick="downloadData('json')">Download JSON</button>
+                                <button class="btn btn-secondary btn-sm btn-secondary" onclick="downloadData('csv')">Download CSV</button>
                             </td>
                         </tr>`;
                         tbody.innerHTML += row;
 
-                        // Add modal
+                        // Add modal for the block
                         const modal = `
-                            <div class="modal fade" id="${rowId}" tabindex="-1" role="dialog" aria-labelledby="${rowId}-label" aria-hidden="true">
+                            <div class="modal fade" id="${modalId}" tabindex="-1" role="dialog" aria-labelledby="${modalId}-label" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="${rowId}-label">Modified Lines</h5>
+                                            <h5 class="modal-title" id="${modalId}-label">Modified Lines</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -94,16 +90,49 @@
                     });
                 });
 
-                // Initialize DataTable
+                // Initialize DataTable after populating rows
                 $('#results-table').DataTable();
             })
             .catch(error => {
                 console.error("Error fetching output data:", error);
-                loadingDiv.style.display = "none";
-                tbody.innerHTML = `<tr><td colspan="3">Error loading data</td></tr>`;
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="3">Error loading data</td>
+                    </tr>`;
             });
     });
+
+    // Download data function
+    function downloadData(format) {
+        fetch("/output-data")
+            .then(response => response.json())
+            .then(data => {
+                if (format === "json") {
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "ifft_results.json";
+                    a.click();
+                } else if (format === "csv") {
+                    const csvRows = [];
+                    csvRows.push("File,Block,Modified Lines");
+                    Object.entries(data).forEach(([file, blocks]) => {
+                        blocks.forEach(block => {
+                            const row = `"${file}","${block.associated_file_label}","${block.modified_lines.join('; ')}"`;
+                            csvRows.push(row);
+                        });
+                    });
+                    const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "ifft_results.csv";
+                    a.click();
+                }
+            })
+            .catch(error => console.error("Error downloading data:", error));
+    }
 </script>
 
-</html>
 {% endblock %}
