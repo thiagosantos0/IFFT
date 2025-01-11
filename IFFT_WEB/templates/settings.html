@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+<div class="container mt-4">
+    <h2>Tool Settings</h2>
+    <form method="POST" action="/settings">
+        <!-- Project Root -->
+        <div class="form-group mt-4">
+            <label for="project_root" class="font-weight-bold">Project Root (valid path):</label>
+            <input type="text" class="form-control" id="project_root" name="project_root" value="{{ config.project_root }}" placeholder="Enter project root directory">
+        </div>
+
+        <!-- Options Section -->
+        <div class="mt-4">
+            <h4 class="font-weight-bold">Options</h4>
+            <!-- Auto Mode -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="auto_mode" name="auto_mode" {% if config.auto_mode %}checked{% endif %}>
+                <label class="form-check-label" for="auto_mode">Enable Auto Mode</label>
+            </div>
+
+            <!-- Debug Mode -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="debug_mode" name="debug_mode" {% if config.debug_mode %}checked{% endif %}>
+                <label class="form-check-label" for="debug_mode">Enable Debug Mode</label>
+            </div>
+
+            <!-- Show Active Blocks -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="show_active_blocks" name="show_active_blocks" {% if config.show_active_blocks %}checked{% endif %}>
+                <label class="form-check-label" for="show_active_blocks">Show Active Blocks</label>
+            </div>
+
+            <!-- Extract IFFT Blocks Content -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="extract_ifft_blocks_content" name="extract_ifft_blocks_content" {% if config.extract_ifft_blocks_content %}checked{% endif %}>
+                <label class="form-check-label" for="extract_ifft_blocks_content">Extract IFFT Blocks Content</label>
+            </div>
+
+            <!-- Disable IFFT -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="disable_ifft" name="disable_ifft" {% if config.disable_ifft %}checked{% endif %}>
+                <label class="form-check-label" for="disable_ifft">Disable IFFT</label>
+            </div>
+
+            <!-- Re-Enable IFFT -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="re_enable_ifft" name="re_enable_ifft" {% if config.re_enable_ifft %}checked{% endif %}>
+                <label class="form-check-label" for="re_enable_ifft">Re-Enable IFFT</label>
+            </div>
+        </div>
+
+        <!-- Excluded Folders -->
+        <div class="form-group mt-4">
+            <label for="excluded_folders" class="font-weight-bold">Excluded Folders (comma-separated):</label>
+            <input type="text" class="form-control" id="excluded_folders" name="excluded_folders" value="{{ config.excluded_folders | join(',') }}" placeholder="e.g., tests, logs">
+        </div>
+
+        <!-- Save Button -->
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-success btn-lg">Save Settings</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
