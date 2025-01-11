@@ -35,12 +35,27 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/graph">Graph Viewer</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">Settings</a>
+                </li>
             </ul>
         </div>
     </nav>
     <main>
         {% block content %}
         {% endblock %}
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                <div class="alert alert-info" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
     </main>
     <footer class="footer mt-auto py-3 bg-light">
     <div class="container text-center">
