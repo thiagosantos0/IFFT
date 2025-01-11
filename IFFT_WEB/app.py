@@ -5,6 +5,8 @@ from modules.graph import graph_bp
 import os
 import json
 import networkx as nx
+import logging
+import time
 
 
 app = Flask(__name__)
@@ -14,6 +16,20 @@ DATA_FILE = os.path.join(DATA_PATH, 'ifft_results.json')
 app.register_blueprint(diff_visualizer_bp)
 app.register_blueprint(output_bp)
 app.register_blueprint(graph_bp)
+
+@app.route('/welcome')
+def welcome():
+    # Fetch recent activity timestamp from `ifft_results.json`
+    try:
+        if os.path.exists(DATA_FILE):
+            last_modified = time.ctime(os.path.getmtime(DATA_FILE))
+        else:
+            last_modified = "No recent activity."
+    except Exception as e:
+        logging.error(f"Error fetching recent activity: {e}")
+        last_modified = "Error fetching recent activity."
+
+    return render_template('welcome.html', last_modified=last_modified)
 
 @app.route('/output-data', methods=['GET'])
 def output_data():
