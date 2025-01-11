@@ -33,7 +33,7 @@ def welcome():
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
-    config_path = os.path.join(os.getcwd(), "ifft_config.json")
+    config_path = os.path.join(os.getcwd(), "..", "ifft_config.json")
 
     if request.method == 'POST':
         try:
