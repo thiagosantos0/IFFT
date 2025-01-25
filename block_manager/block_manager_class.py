@@ -245,7 +245,7 @@ class BlockManager:
         """
 
         file_prefix = file_name_prefix.split("/")[-1].split(".")[0]
-        print("{Fore.YELLOW}[INFO] Restoring IFFT blocks for file: {Style.RESET_ALL}", file_prefix)
+        print(f"{Fore.YELLOW}[INFO] Restoring IFFT blocks for file: {Style.RESET_ALL}", file_prefix)
 
         # Construct the path to the metadata file
         metadata_path = os.path.join("block_metadata", f"{file_prefix}.json")
