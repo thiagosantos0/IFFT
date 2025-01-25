@@ -41,9 +41,9 @@ def save_results_to_file(results, output_file="ifft_results.json"):
     try:
         with open(output_file, "w") as f:
             json.dump(serializable_results, f, indent=4)
-        print(f"Results successfully saved to {output_file}.")
+        logging.info(f"{Fore.YELLOW} Results successfully saved to {output_file}{Style.RESET_ALL}") 
     except Exception as e:
-        print(f"Failed to save results: {e}")
+        logging.error(f"{Fore.RED} Failed to save results: {e}") 
 
 # TO-DO(): Move load_config function to helper file and read the debug flag from the configuration file.
 
@@ -106,9 +106,9 @@ def get_modified_lines(repo: str, filename: str, auto_mode: argparse.Namespace) 
     else:
         diff_text = repo.git.diff('HEAD', filename)
 
-    logging.info(f"{Fore.BLUE} DIFF TEXT: {diff_text} {Style.RESET_ALL}")
-    logging.info(f"{Fore.BLUE} REPO: {repo} {Style.RESET_ALL}")
-    logging.info(f"{Fore.BLUE} FILENAME: {filename} {Style.RESET_ALL}")
+    logging.debug(f"{Fore.BLUE} DIFF TEXT: {diff_text} {Style.RESET_ALL}")
+    logging.debug(f"{Fore.BLUE} REPO: {repo} {Style.RESET_ALL}")
+    logging.debug(f"{Fore.BLUE} FILENAME: {filename} {Style.RESET_ALL}")
 
     diff_lines = diff_text.split('\n')
     line_number = 0
@@ -122,7 +122,7 @@ def get_modified_lines(repo: str, filename: str, auto_mode: argparse.Namespace) 
         elif line.startswith(' '):
             line_number += 1
 
-    logging.info(f"{Fore.GREEN} Modified lines: {modified_lines} {Style.RESET_ALL}")
+    logging.info(f"{Fore.YELLOW} Modified lines: {modified_lines} {Style.RESET_ALL}")
     return modified_lines
 
 
@@ -136,7 +136,7 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
     block_end = 0
     modified_lines_within_blocks = []
 
-    logging.debug(f"Scanning file: {filename}")
+    logging.debug(f"{Fore.BLUE}Scanning file: {filename}{Style.RESET_ALL}")
     file_path = os.path.join(project_path, filename)
 
     with open(file_path) as f:
@@ -175,7 +175,7 @@ def scan_file(project_path: str, filename: str, modified_lines_set: set) -> list
             )
             results.append(block)
 
-            logging.debug(f"Found IFFTBlock: {block}")
+            logging.debug(f"{Fore.BLUE}Found IFFTBlock: {block}{Style.RESET_ALL}")
 
             in_block = False
             block_content = ""
@@ -232,16 +232,16 @@ def scan_files(project_path: str = dir_path_mock_project, auto_mode: argparse.Na
     results_dict = {}
     try:
         repo = Repo(project_path)
-        logging.info(f"Scanning Git repository: {project_path}")
+        logging.info(f"{Fore.YELLOW}Scanning Git repository: {project_path}{Style.RESET_ALL}")
     except NoSuchPathError:
-        logging.error(f"The path '{project_path}' does not exist.")
+        logging.error(f"{Fore.RED}The path '{project_path}' does not exist.{Style.RESET_ALL}")
         return results_dict
     except InvalidGitRepositoryError:
-        logging.warning(f"The path '{project_path}' is not a valid Git repository. Skipping Git-specific checks.")
+        logging.warning(f"{Fore.ORANGE}The path '{project_path}' is not a valid Git repository. Skipping Git-specific checks.{Style.RESET_ALL}")
         # Optionally return or skip additional scanning logic for non-Git directories
         return results_dict
     except Exception as e:
-        logging.error(f"An unexpected error occurred: {e}")
+        logging.error(f"{Fore.RED}An unexpected error occurred: {e}{Style.RESET_ALL}")
         return results_dict
 
     modified_files = []
@@ -251,11 +251,11 @@ def scan_files(project_path: str = dir_path_mock_project, auto_mode: argparse.Na
         result = subprocess.run(['git', 'diff', '--cached', '--name-only', '--diff-filter=ACM'], capture_output=True, text=True)
         modified_files = result.stdout.splitlines()
 
-    logging.info(f"Modified files found: {modified_files}")
+    logging.info(f"{Fore.YELLOW}Modified files found: {modified_files}{Style.RESET_ALL}")
 
     for filename in modified_files:
         if filename.endswith(".py"):
-            logging.info(f"Scanning file: {filename}")
+            logging.info(f"{Fore.YELLOW}Scanning file: {filename}{Style.RESET_ALL}")
             modified_lines_set = get_modified_lines(repo, filename, auto_mode)
             file_results = scan_file(project_path, filename, modified_lines_set)
             if file_results:
