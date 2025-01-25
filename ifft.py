@@ -186,6 +186,7 @@ def main(auto_mode=False):
     for file, blocks in results.items():
         for block in blocks:
             logging.debug(f"Change identified inside an IFFT block in {file}:\n\n {block.block_content}")
+            print("\n")
             print(f"Modified lines within the block: {block.modified_lines}")
             if block.modified_lines != []:
                 print(f"Should also modify: {block.associated_file_name}\nBlock label: {block.associated_file_label} \n")
