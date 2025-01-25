@@ -120,7 +120,6 @@ def main(auto_mode=False):
         logging.debug(f"Results found: {results}")
         # Save results to be consumed by UI API's
         path = os.path.join(project_root, "..", "IFFT_WEB/data/", "ifft_results.json")
-        print("[THIAGO] path: ", path)
         save_results_to_file(results, output_file=path)
         
 
