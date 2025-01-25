@@ -111,7 +111,6 @@ class BlockManager:
         total_blocks = 0
         for file, blocks in self.block_data.items():
             # Counting only blocks with associated_file_name and associated_file_label
-            print(f"(thiagoths) blocks: ", blocks)
             if (blocks[0]['associated_file_name'] == "" or blocks[0]['associated_file_label'] == ""):
                 logging.warning(f"{Fore.YELLOW} A block in file '{file}' does not have 'associated_file_name' or 'associated_file_label'. Skipping it.{Style.RESET_ALL}")
                 continue
