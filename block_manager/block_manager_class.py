@@ -7,7 +7,6 @@ import os
 from helpers.helpers import resolve_path
 
 
-# TO-DO(): Move those functions to a helper module
 def load_config():
     """Load the IFFT configuration file."""
     config_path = os.path.join(os.path.dirname(__file__), 'ifft_config.json')
@@ -69,7 +68,6 @@ class BlockManager:
 
     def _load_metadata(self):
         """Load all metadata from the block_metadata directory."""
-        print(f"[adesk5] called '_load_metadata' function")
         if not os.path.exists(self.storage_dir):
             logging.warning(f"Metadata directory '{self.storage_dir}' does not exist.")
             return
@@ -79,7 +77,7 @@ class BlockManager:
                 file_path = os.path.join(self.storage_dir, metadata_file)
                 try:
                     with open(file_path, "r") as f:
-                        file_data = json.load(f)  # Attempt to load JSON
+                        file_data = json.load(f)
                         self.block_data[metadata_file] = file_data
                 except json.JSONDecodeError:
                     logging.error(f"[ERROR] Invalid JSON in {file_path}. Skipping this file.")
@@ -116,7 +114,7 @@ class BlockManager:
                 continue
 
             total_blocks += len(blocks)
-        print(f"Total active IFFT blocks in the project: {total_blocks}")
+        print(f"{Fore.GREEN}Total active IFFT blocks in the project: {total_blocks}")
         return total_blocks
 
     def extract_blocks(self, file_name, blocks):
@@ -149,7 +147,6 @@ class BlockManager:
                 "associated_file_label": block.associated_file_label
             })
 
-        print(f"[adesk5] metadata_file_path is: {metadata_file_path}")
         # Write metadata to the JSON file
         with open(metadata_file_path, "w") as f:
             json.dump(metadata, f, indent=4)
@@ -169,19 +166,14 @@ class BlockManager:
         script_file_name = file_prefix + ".py"
         metadata_file_name = file_prefix + ".json"
 
-        print(f"[adesk5] file_prefix is: {file_prefix}")
-
-        print(f"[DEBUG] Removing IFFT blocks from {script_file_name}")
+        logging.info(f"Removing IFFT blocks from {script_file_name}")
         source_file_path = resolve_path(script_file_name)
-        print(f"[adesk5] source_file_path is: {source_file_path}")
 
         if not os.path.exists(source_file_path):
             logging.error(f"Source file {script_file_name} not found.")
             return
 
         metadata_path = os.path.join(self.storage_dir, f"{file_prefix}.json")
-        print(f"[adesk5] metadata_file_name is: {metadata_file_name}")
-        print(f"[adesk5] metadata_path is: {metadata_path}")
         metadata = []
 
         with open(source_file_path, "r") as source_file:
@@ -232,7 +224,7 @@ class BlockManager:
         with open(metadata_path, "w") as metadata_file:
             json.dump(metadata, metadata_file, indent=4)
 
-        print(f"[INFO] Metadata written to {metadata_path}")
+        print(f"{Fore.YELLOW}[INFO] Metadata written to {metadata_path}")
 
         # Remove IFFT annotations from the source file
         lines = [
@@ -243,7 +235,7 @@ class BlockManager:
         with open(source_file_path, "w") as source_file:
             source_file.writelines(lines)
 
-        print(f"[INFO] Removed IFFT blocks from {script_file_name}.")
+        print(f"{Fore.YELLOW}[INFO] Removed IFFT blocks from {script_file_name}.")
 
 
     def restore_ifft_blocks(self, file_name_prefix):
@@ -253,14 +245,14 @@ class BlockManager:
         """
 
         file_prefix = file_name_prefix.split("/")[-1].split(".")[0]
-        print("[INFO] Restoring IFFT blocks for file:", file_prefix)
+        print("{Fore.YELLOW}[INFO] Restoring IFFT blocks for file: {Style.RESET_ALL}", file_prefix)
 
         # Construct the path to the metadata file
         metadata_path = os.path.join("block_metadata", f"{file_prefix}.json")
-        print(f"[INFO] Metadata path: {metadata_path}")
+        logging.info(f"Metadata path: {metadata_path}")
 
         if not os.path.exists(metadata_path):
-            print(f"[ERROR] Metadata file for {file_prefix} not found.")
+            print(f"{Fore.RED}[ERROR] Metadata file for {file_prefix} not found.")
             return
 
         # Load metadata
@@ -271,7 +263,7 @@ class BlockManager:
         # Read the target file
         target_file_path = os.path.join(get_project_root(), filename)
         if not os.path.exists(target_file_path):
-            print(f"[ERROR] Target file {filename} not found.")
+            print(f"{Fore.RED}[ERROR] Target file {filename} not found.{Style.RESET_ALL}")
             return
 
         with open(target_file_path, "r") as f:
@@ -296,5 +288,5 @@ class BlockManager:
         with open(target_file_path, "w") as f:
             f.writelines(lines)
 
-        print(f"[INFO] Successfully restored IFFT blocks to {filename}")
+        print(f"{Fore.YELLOW}[INFO] Successfully restored IFFT blocks to {filename}")
 
