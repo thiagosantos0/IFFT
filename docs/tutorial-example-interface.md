@@ -1,6 +1,12 @@
 This section of documentaion will contain some information regarding IFFT Web Interface.
 The idea here is to give a general idea of which options are available.
 
+**Important Note:** *Use this command to start the IFFT UI version.*
+```bash
+ // Make sure you are inside the IFFT folder
+ $ python3 IFFT_WEB/app.py 
+```
+
 ![initial_page](https://i.postimg.cc/9FYtFDcg/initial-screen.png)
 
 Here is the list of corrent `features` supported by the UI version:
