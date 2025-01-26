@@ -25,5 +25,6 @@ nav:
     - Example - Automode: 'tutorial-example-automode.md'
     - Interface Web: 'tutorial-example-interface.md'
   - Reference:
-    - Parser: reference.md
+    - Parser: reference.md # ifft_core
     - Block Manager: block_manager.md
+    - Helpers: helpers.md
