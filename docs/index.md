@@ -7,14 +7,25 @@ IFFT is a Python linter to help you handle correlated changes across your codeba
 
 ## Commands
 
-* `./ifft.py [dir-name]` - Run IFFT tool in [dir_name] project.
+* `python3 ifft.py` - Run IFFT tool in manual mode.
 
 ## Project structure 
 ```
   ├── banner.py
   ├── docs
+  ├── block_metadata 
+  ├── helpers 
+  │   ├── ...
+  ├── IFFT_WEB 
+  │   ├── ...
   ├── ifft_core
   │   ├── ifft_parser.py # File with tool helper methods
+  │   └── __init__.py
+  ├── ifft_block 
+  │   ├── ifft_block_class.py
+  │   └── __init__.py
+  ├── ifft_block_manager
+  │   ├── block_manager_class.py
   │   └── __init__.py
   ├── ifft.py # Main file that triggers the tool
   ├── mkdocs.yml
