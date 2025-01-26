@@ -21,7 +21,7 @@ def get_project_root():
     project_root = config.get("project_root", "mock_project")
     return os.path.abspath(project_root)  # Ensure it's an absolute path
 
-def list_python_files(project_root=None, metadata_dir="block_metadata"):
+def list_python_files(project_root=None, metadata_dir="block_metadata") -> list[str]:
     """
     List all tracked Python files in the user-specified project.
     First checks the block_metadata directory, and falls back to scanning the project root.
@@ -108,11 +108,7 @@ class BlockManager:
         """Count the total number of active IFFT blocks in the project."""
         total_blocks = 0
         for file, blocks in self.block_data.items():
-            # Counting only blocks with associated_file_name and associated_file_label
-            if (blocks[0]['associated_file_name'] == "" or blocks[0]['associated_file_label'] == ""):
-                logging.warning(f"{Fore.YELLOW} A block in file '{file}' does not have 'associated_file_name' or 'associated_file_label'. Skipping it.{Style.RESET_ALL}")
-                continue
-
+            # TO-DO: Counting only blocks with associated_file_name and associated_file_label
             total_blocks += len(blocks)
         print(f"{Fore.GREEN}Total active IFFT blocks in the project: {total_blocks}")
         return total_blocks
