@@ -28,3 +28,4 @@ nav:
     - Parser: reference.md # ifft_core
     - Block Manager Class: block_manager.md
     - Helpers: helpers.md
+  - Installing Project Dependencies: dependencies.md
