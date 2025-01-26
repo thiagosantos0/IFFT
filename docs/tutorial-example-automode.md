@@ -68,7 +68,13 @@ print('Hello world!')
 
 
 ### **Step 0**: pre-commit configuration 
-In order to use IFFT in *automode* all you have to do is create a pre-commit file for your project. You can find a pre-filled template that should cover the great majority of the use cases:
+In order to use IFFT in *automode* all you have to do is create a pre-commit file for your project. The follow is a pre-filled template that should cover the great majority of the use cases:
+
+**Note1:** *This script consider the proposed project structure (you can find it in the docs main page). Ih you diverge from that structure, please make sure to do the necessary changes in the script,
+specially the paths.*
+
+**Note2:** *You'll be able to find this template file in the project repository with the name `pre-commit-template`, if you download it, don't forget to change the name before to `pre-commit`, the file
+that will be in the hooks config should have the later name.*
 
 ```bash
 #!/bin/bash
@@ -238,4 +244,7 @@ that a change is not necessary, he can go on with the commit.
 <!--- Ending the tutorial section -->
 
 ### **Final message**
+
+**Important final note:** *Please keep in mind that the `manual` `auto` mode works differently. The `auto` mode monitors files in **staging area** (in other words, after you use a git add command or equivalent), while the `manual` mode monitors files in **unstaged area**.*
+
 This is the end of the tutorial. The tool can be used in a real project to help developers to keep track of the changes and to make sure that the changes are propagated to the associated files. This tutorial isn't a exact one but it should be enough to give a glimpse of how the tool can be used in a real project.
