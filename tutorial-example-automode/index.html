@@ -534,6 +534,26 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dependencies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing Project Dependencies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -707,7 +727,11 @@ print('Hello world!')
 #IFFT.Then (path_to_associated_file, associated_file_ifft_label)
 </code></pre>
 <h3 id="step-0-pre-commit-configuration"><strong>Step 0</strong>: pre-commit configuration</h3>
-<p>In order to use IFFT in <em>automode</em> all you have to do is create a pre-commit file for your project. You can find a pre-filled template that should cover the great majority of the use cases:</p>
+<p>In order to use IFFT in <em>automode</em> all you have to do is create a pre-commit file for your project. The follow is a pre-filled template that should cover the great majority of the use cases:</p>
+<p><strong>Note1:</strong> <em>This script consider the proposed project structure (you can find it in the docs main page). Ih you diverge from that structure, please make sure to do the necessary changes in the script,
+specially the paths.</em></p>
+<p><strong>Note2:</strong> <em>You'll be able to find this template file in the project repository with the name <code>pre-commit-template</code>, if you download it, don't forget to change the name before to <code>pre-commit</code>, the file
+that will be in the hooks config should have the later name.</em></p>
 <pre><code class="language-bash">#!/bin/bash
 
 # This is a pre-commit template configuration that can be used for any project with
@@ -850,6 +874,7 @@ that a change is not necessary, he can go on with the commit.</p>
 <!--- Ending the tutorial section -->
 
 <h3 id="final-message"><strong>Final message</strong></h3>
+<p><strong>Important final note:</strong> <em>Please keep in mind that the <code>manual</code> <code>auto</code> mode works differently. The <code>auto</code> mode monitors files in </em><em>staging area</em><em> (in other words, after you use a git add command or equivalent), while the <code>manual</code> mode monitors files in </em><em>unstaged area</em><em>.</em></p>
 <p>This is the end of the tutorial. The tool can be used in a real project to help developers to keep track of the changes and to make sure that the changes are propagated to the associated files. This tutorial isn't a exact one but it should be enough to give a glimpse of how the tool can be used in a real project.</p>
 
 
