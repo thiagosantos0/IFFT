@@ -26,5 +26,5 @@ nav:
     - Interface Web: 'tutorial-example-interface.md'
   - Reference:
     - Parser: reference.md # ifft_core
-    - Block Manager: block_manager.md
+    - Block Manager Class: block_manager.md
     - Helpers: helpers.md
