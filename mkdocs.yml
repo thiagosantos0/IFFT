@@ -1,4 +1,4 @@
-site_name: My Docs
+site_name: IFFT Tool Documentation
 
 theme:
   name: material
@@ -11,10 +11,19 @@ theme:
 
 plugins:
   - search
-  - mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_signature: true
+            show_source: true
 
 nav:
-  - index.md
-  - Example - Manual: tutorial-example-manual.md
-  - Example - Automode: 'tutorial-example-automode.md'
-  - reference.md
+  - Home: index.md
+  - IFFT Modes:
+    - Example - Manual: tutorial-example-manual.md
+    - Example - Automode: 'tutorial-example-automode.md'
+    - Interface Web: 'tutorial-example-interface.md'
+  - Reference:
+    - Parser: reference.md
+    - Block Manager: block_manager.md
