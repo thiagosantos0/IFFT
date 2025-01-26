@@ -583,13 +583,24 @@
 
 <h2 id="commands">Commands</h2>
 <ul>
-<li><code>./ifft.py [dir-name]</code> - Run IFFT tool in [dir_name] project.</li>
+<li><code>python3 ifft.py</code> - Run IFFT tool in manual mode.</li>
 </ul>
 <h2 id="project-structure">Project structure</h2>
 <pre><code>  ├── banner.py
   ├── docs
+  ├── block_metadata 
+  ├── helpers 
+  │   ├── ...
+  ├── IFFT_WEB 
+  │   ├── ...
   ├── ifft_core
   │   ├── ifft_parser.py # File with tool helper methods
+  │   └── __init__.py
+  ├── ifft_block 
+  │   ├── ifft_block_class.py
+  │   └── __init__.py
+  ├── ifft_block_manager
+  │   ├── block_manager_class.py
   │   └── __init__.py
   ├── ifft.py # Main file that triggers the tool
   ├── mkdocs.yml
